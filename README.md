@@ -32,7 +32,7 @@ Before you start, ensure you have the following software and tools installed:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/OpenProcessLibrary.git
+   git clone https://github.com/open-mobile-robotics/Open-Process-Library.git
    ```
 2. **Import the Library**:
    - Follow the instructions specific to your PLC programming environment to import the library components into your project.
