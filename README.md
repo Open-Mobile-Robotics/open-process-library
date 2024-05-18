@@ -122,4 +122,3 @@ Feel free to reach out with any questions or feedback. Happy automating!
 
 ---
 
-By following this template, you'll ensure that your GitHub README is comprehensive, user-friendly, and inviting to both new users and potential contributors.
