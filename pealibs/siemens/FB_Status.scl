@@ -1,0 +1,463 @@
+﻿FUNCTION_BLOCK "FB_Status"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      cmd : UDInt;
+      value : Bool;
+      state : UDInt;
+   END_VAR
+
+   VAR 
+      status_codes { S7_SetPoint := 'False'} : "UDT_status_codes";
+      hold_enabled { S7_SetPoint := 'True'} : Bool;
+      pause_enabled : Bool;
+      restart_enabled : Bool;
+      command_en_control { S7_SetPoint := 'False'} : "FB_CommandEnControl";
+      act_state { S7_SetPoint := 'True'} : Int;
+      prev_state : Int;
+      command_en_sum : UDInt;
+   END_VAR
+
+
+BEGIN
+	// Calculate Sum of Enabled Commands for external facing State channel
+	#command_en_sum := 0;
+	IF #status_codes.BSC.bstopped_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.stopped_status;
+	END_IF;
+	IF #status_codes.BSC.bstarting_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.starting_status;
+	END_IF;
+	IF #status_codes.BSC.bidle_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.idle_status;
+	END_IF;
+	IF #status_codes.BSC.bpaused_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.paused_status;
+	END_IF;
+	IF #status_codes.BSC.bexecute_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.execute_status;
+	END_IF;
+	IF #status_codes.BSC.bstopping_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.stopping_status;
+	END_IF;
+	IF #status_codes.BSC.baborting_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.aborting_status;
+	END_IF;
+	IF #status_codes.BSC.baborted_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.aborted_status;
+	END_IF;
+	IF #status_codes.BSC.bholding_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.holding_status;
+	END_IF;
+	IF #status_codes.BSC.bheld_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.held_status;
+	END_IF;
+	IF #status_codes.BSC.bunholding_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.unholding_status;
+	END_IF;
+	IF #status_codes.BSC.bpausing_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.pausing_status;
+	END_IF;
+	IF #status_codes.BSC.bresuming_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.resuming_status;
+	END_IF;
+	IF #status_codes.BSC.bresetting_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.resetting_status;
+	END_IF;
+	IF #status_codes.BSC.bcompleting_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.completing_status;
+	END_IF;
+	IF #status_codes.BSC.bcompleted_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.completed_status;
+	END_IF;
+	IF #status_codes.BSC.bundefined_status THEN
+	    #command_en_sum := #command_en_sum + #status_codes.MSC.undefined_status;
+	END_IF;
+	
+	// Set Command Enable Value for internal state management
+	CASE #cmd OF
+	    4:   // MSC.stopped_status
+	        #status_codes.BSC.bstopped_status := #value;
+	    8:   // MSC.starting_status
+	        #status_codes.BSC.bstarting_status := #value;
+	    16:  // MSC.idle_status
+	        #status_codes.BSC.bidle_status := #value;
+	    32:  // MSC.paused_status
+	        #status_codes.BSC.bpaused_status := #value;
+	    64:  // MSC.execute_status
+	        #status_codes.BSC.bexecute_status := #value;
+	    128: // MSC.stopping_status
+	        #status_codes.BSC.bstopping_status := #value;
+	    256: // MSC.aborting_status
+	        #status_codes.BSC.baborting_status := #value;
+	    512: // MSC.aborted_status
+	        #status_codes.BSC.baborted_status := #value;
+	    1024: // MSC.holding_status
+	        #status_codes.BSC.bholding_status := #value;
+	    2048: // MSC.held_status
+	        #status_codes.BSC.bheld_status := #value;
+	    4096: // MSC.unholding_status
+	        #status_codes.BSC.bunholding_status := #value;
+	    8192: // MSC.pausing_status
+	        #status_codes.BSC.bpausing_status := #value;
+	    16384: // MSC.resuming_status
+	        #status_codes.BSC.bresuming_status := #value;
+	    32678: // MSC.resetting_status
+	        #status_codes.BSC.bresetting_status := #value;
+	    65536: // MSC.completing_status
+	        #status_codes.BSC.bcompleting_status := #value;
+	    131072: // MSC.completed_status
+	        #status_codes.BSC.bcompleted_status := #value;
+	    1: // MSC.undefined_status
+	        #status_codes.BSC.bundefined_status := #value;
+	    ELSE
+	        // Do nothing
+	        ;
+	END_CASE;
+	
+	// Enable/Disable Hold Loop
+	IF #cmd = 999 THEN
+	    #hold_enabled := #value;
+	END_IF;
+	
+	// Enable/Disable Pause Loop
+	IF #cmd = 998 THEN
+	    #pause_enabled := #value;
+	END_IF;
+	
+	// Enable/Disable Restart
+	IF #cmd = 997 THEN
+	    #restart_enabled := #value;
+	END_IF;
+	
+	// Execute State Change
+	CASE #state OF
+	    4:
+	        // Stopped State Logic
+	        #status_codes.BSC.bstopped_status := TRUE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    8:
+	        // Starting State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := TRUE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    16:
+	        // Idle State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := TRUE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    32:
+	        // Paused State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := TRUE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    64:
+	        // Execute State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := TRUE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    128:
+	        // Stopping State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := TRUE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    256:
+	        // Aborting State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := TRUE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    512:
+	        // Aborted State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := TRUE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    1024:
+	        // Holding State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := TRUE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    2048:
+	        // Held State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := TRUE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    4096:
+	        // Unholding State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := TRUE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    8192:
+	        // Pausing State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := TRUE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    16384:
+	        // Resuming State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := TRUE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := TRUE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    32678:
+	        // Resetting State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := TRUE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    65536:
+	        // Completing State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := TRUE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    131072:
+	        // Completed State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := TRUE;
+	        #status_codes.BSC.bundefined_status := FALSE;
+	    1:
+	        // Undefined State Logic
+	        #status_codes.BSC.bstopped_status := FALSE;
+	        #status_codes.BSC.bstarting_status := FALSE;
+	        #status_codes.BSC.bidle_status := FALSE;
+	        #status_codes.BSC.bpaused_status := FALSE;
+	        #status_codes.BSC.bexecute_status := FALSE;
+	        #status_codes.BSC.bstopping_status := FALSE;
+	        #status_codes.BSC.baborting_status := FALSE;
+	        #status_codes.BSC.baborted_status := FALSE;
+	        #status_codes.BSC.bholding_status := FALSE;
+	        #status_codes.BSC.bheld_status := FALSE;
+	        #status_codes.BSC.bunholding_status := FALSE;
+	        #status_codes.BSC.bpausing_status := FALSE;
+	        #status_codes.BSC.bresuming_status := FALSE;
+	        #status_codes.BSC.bresetting_status := FALSE;
+	        #status_codes.BSC.bcompleting_status := FALSE;
+	        #status_codes.BSC.bcompleted_status := FALSE;
+	        #status_codes.BSC.bundefined_status := TRUE;
+	    ELSE
+	        // Do nothing
+	        ;
+	END_CASE;
+END_FUNCTION_BLOCK
+
