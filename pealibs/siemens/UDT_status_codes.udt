@@ -1,0 +1,45 @@
+﻿TYPE "UDT_status_codes"
+VERSION : 0.1
+   STRUCT
+      MSC : Struct   // Master State Codes
+         stopped_status : UDInt := 4;
+         starting_status : Int := 8;
+         idle_status : Int := 16;
+         paused_status : Int := 32;
+         execute_status : Int := 64;
+         stopping_status : Int := 128;
+         aborting_status : Int := 256;
+         aborted_status : Int := 512;
+         holding_status : Int := 1024;
+         held_status : Int := 2048;
+         unholding_status : Int := 4096;
+         pausing_status : Int := 8192;
+         resuming_status : UDInt := 16384;
+         resetting_status : UDInt := 32678;
+         completing_status : UDInt := 65536;
+         completed_status : UDInt := 131072;
+         undefined_status : UDInt := 1;
+      END_STRUCT;
+      BSC : Struct   // Bool State Codes
+         bstopped_status : Bool;
+         bstarting_status : Bool;
+         bidle_status : Bool;
+         bpaused_status : Bool;
+         bexecute_status : Bool;
+         bstopping_status : Bool;
+         baborting_status : Bool;
+         baborted_status : Bool;
+         bholding_status : Bool;
+         bheld_status : Bool;
+         bunholding_status : Bool;
+         bpausing_status : Bool;
+         bresuming_status : Bool;
+         bresetting_status : Bool;
+         bcompleting_status : Bool;
+         bcompleted_status : Bool;
+         bundefined_status : Bool;
+      END_STRUCT;
+   END_STRUCT;
+
+END_TYPE
+

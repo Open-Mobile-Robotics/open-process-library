@@ -1,0 +1,31 @@
+﻿TYPE "UDT_command_codes"
+VERSION : 0.1
+   STRUCT
+      MCC : Struct   // Master Command Codes
+         reset_command : Int := 2;
+         start_command : Int := 4;
+         stop_command : Int := 8;
+         hold_command : Int := 16;
+         unhold_command : Int := 32;
+         pause_command : Int := 64;
+         resume_command : Int := 128;
+         abort_command : Int := 256;
+         restart_command : Int := 512;
+         complete_command : Int := 1024;
+      END_STRUCT;
+      BCC : Struct   // Bool Command Codes
+         breset_command : Bool;
+         bstart_command : Bool;
+         bstop_command : Bool;
+         bhold_command : Bool;
+         bunhold_command : Bool;
+         bpause_command : Bool;
+         bresume_command : Bool;
+         babort_command : Bool;
+         brestart_command : Bool;
+         bcomplete_command : Bool;
+      END_STRUCT;
+   END_STRUCT;
+
+END_TYPE
+
