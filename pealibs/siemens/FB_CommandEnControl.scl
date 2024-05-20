@@ -1,0 +1,419 @@
+﻿FUNCTION_BLOCK "FB_CommandEnControl"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      cmd : Int;
+      value : Bool;
+      state : Int;
+   END_VAR
+
+   VAR 
+      command_codes { S7_SetPoint := 'False'} : "UDT_command_codes";
+      hold_enabled { S7_SetPoint := 'True'} : Bool := True;
+      pause_enabled : Bool := true;
+      restart_enabled : Bool := true;
+   END_VAR
+
+   VAR_TEMP 
+      command_en_sum : Int;
+   END_VAR
+
+
+BEGIN
+	REGION _enabledcommands_
+	    // Calculate Sum of Enabled Commands for external facing State channel
+	    #command_en_sum := 0;
+	    IF #command_codes.BCC.breset_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.reset_command;
+	    END_IF;
+	    IF #command_codes.BCC.bstart_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.start_command;
+	    END_IF;
+	    IF #command_codes.BCC.bstop_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.stop_command;
+	    END_IF;
+	    IF #command_codes.BCC.bhold_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.hold_command;
+	    END_IF;
+	    IF #command_codes.BCC.bunhold_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.unhold_command;
+	    END_IF;
+	    IF #command_codes.BCC.bpause_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.pause_command;
+	    END_IF;
+	    IF #command_codes.BCC.bresume_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.resume_command;
+	    END_IF;
+	    IF #command_codes.BCC.babort_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.abort_command;
+	    END_IF;
+	    IF #command_codes.BCC.brestart_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.restart_command;
+	    END_IF;
+	    IF #command_codes.BCC.bcomplete_command THEN
+	        #command_en_sum := #command_en_sum + #command_codes.MCC.complete_command;
+	    END_IF;
+	    
+	END_REGION
+	REGION _setinternalswitches_
+	    // Set Command Enable Value for internal state management
+	    CASE #cmd OF
+	        2:   // MCC.reset_command
+	            #command_codes.BCC.breset_command := #value;
+	        4:   // MCC.start_command
+	            #command_codes.BCC.bstart_command := #value;
+	        8:   // MCC.stop_command
+	            #command_codes.BCC.bstop_command := #value;
+	        16:  // MCC.hold_command
+	            #command_codes.BCC.bhold_command := #value;
+	        32:  // MCC.unhold_command
+	            #command_codes.BCC.bunhold_command := #value;
+	        64:  // MCC.pause_command
+	            #command_codes.BCC.bpause_command := #value;
+	        128: // MCC.resume_command
+	            #command_codes.BCC.bresume_command := #value;
+	        256: // MCC.abort_command
+	            #command_codes.BCC.babort_command := #value;
+	        512: // MCC.restart_command
+	            #command_codes.BCC.brestart_command := #value;
+	        1024: // MCC.complete_command
+	            #command_codes.BCC.bcomplete_command := #value;
+	        ELSE
+	            // Do nothing
+	            ;
+	    END_CASE;
+	    
+	    // Enable/Disable Hold Loop
+	    IF #cmd = 999 THEN
+	        #hold_enabled := #value;
+	    END_IF;
+	    
+	    // Enable/Disable Pause Loop
+	    IF #cmd = 998 THEN
+	        #pause_enabled := #value;
+	    END_IF;
+	    
+	    // Enable/Disable Restart
+	    IF #cmd = 997 THEN
+	        #restart_enabled := #value;
+	    END_IF;
+	    
+	END_REGION
+	
+	
+	
+	REGION _executestatechange_
+	
+	    // Execute State Change
+	    CASE #state OF
+	        0:
+	            // Disable All Commands
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := FALSE;
+	            #command_codes.BCC.bhold_command := FALSE;
+	            #command_codes.BCC.bunhold_command := FALSE;
+	            #command_codes.BCC.bpause_command := FALSE;
+	            #command_codes.BCC.bresume_command := FALSE;
+	            #command_codes.BCC.babort_command := FALSE;
+	            #command_codes.BCC.brestart_command := FALSE;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        1:
+	            // Idle State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := TRUE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        2:
+	            // Starting State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := TRUE;
+	        3:
+	            // Execute State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := TRUE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := TRUE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := TRUE;
+	        4:
+	            // Completing State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        5:
+	            // Completed State Logic
+	            #command_codes.BCC.breset_command := TRUE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        6:
+	            // Resuming State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := TRUE;
+	        7:
+	            // Paused State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := TRUE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := TRUE;
+	        8:
+	            // Pausing State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := TRUE;
+	        9:
+	            // Holding State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        10:
+	            // Held State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := TRUE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        11:
+	            // Unholding State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := TRUE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := TRUE;
+	        12:
+	            // Stopping State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := FALSE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        13:
+	            // Stopped State Logic
+	            #command_codes.BCC.breset_command := TRUE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := FALSE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        14:
+	            // Aborting State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := FALSE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := FALSE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        15:
+	            // Aborted State Logic
+	            #command_codes.BCC.breset_command := TRUE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := FALSE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := FALSE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        16:
+	            // Resetting State Logic
+	            #command_codes.BCC.breset_command := FALSE;
+	            #command_codes.BCC.bstart_command := FALSE;
+	            #command_codes.BCC.bstop_command := TRUE;
+	            IF #hold_enabled THEN
+	                #command_codes.BCC.bhold_command := FALSE;
+	                #command_codes.BCC.bunhold_command := FALSE;
+	            END_IF;
+	            IF #pause_enabled THEN
+	                #command_codes.BCC.bpause_command := FALSE;
+	                #command_codes.BCC.bresume_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.babort_command := TRUE;
+	            IF #restart_enabled THEN
+	                #command_codes.BCC.brestart_command := FALSE;
+	            END_IF;
+	            #command_codes.BCC.bcomplete_command := FALSE;
+	        ELSE
+	            // Do nothing
+	            ;
+	    END_CASE;
+	    
+	END_REGION
+	
+	
+	
+END_FUNCTION_BLOCK
+
