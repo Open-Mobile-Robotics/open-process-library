@@ -1,5 +1,7 @@
 ### Open Process Library
 
+## Note: This library is currently pre-first release. Therefore any objects you use from it are considered non-canonical and will not be supported until the first release.
+
 Welcome to the **Open Process Library** repository! This project aims to provide a comprehensive, vendor-agnostic process automation library designed to facilitate the development of PLC programs for process equipment assembly. Whether you are an experienced automation engineer or a newcomer to process control, this library offers the tools and resources you need to streamline your development process and enhance the efficiency of your projects.
 
 ---
