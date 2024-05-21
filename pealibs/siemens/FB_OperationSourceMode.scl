@@ -1,0 +1,256 @@
+﻿FUNCTION_BLOCK "FB_OperationSourceMode"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR 
+      operation_mode { S7_SetPoint := 'False'} : "UDT_OperationSourceMode";
+      switch_to_offline_mode_allowed { S7_SetPoint := 'True'} : Bool;
+      prev_mode_is_op : Bool;
+      prev_mode_is_aut : Bool;
+      prev_mode_is_off : Bool;
+      execute_enter_offline : Bool;
+      execute_exit_offline : Bool;
+      execute_enter_operator : Bool;
+      execute_exit_operator : Bool;
+      execute_enter_automatic : Bool;
+      execute_exit_automatic : Bool;
+   END_VAR
+
+
+BEGIN
+	
+	// Handle callbacks execution
+	IF #execute_enter_offline THEN
+	    // Add the logic for entering offline mode
+	    #execute_enter_offline:= FALSE;
+	    // Log message
+	END_IF;
+	
+	IF #execute_exit_offline THEN
+	    // Add the logic for exiting offline mode
+	    #execute_exit_offline := FALSE;
+	    // Log message
+	END_IF;
+	
+	IF #execute_enter_operator THEN
+	    // Add the logic for entering operator mode
+	    #execute_enter_operator := FALSE;
+	    // Log message
+	END_IF;
+	
+	IF #execute_exit_operator THEN
+	    // Add the logic for exiting operator mode
+	    #execute_exit_operator := FALSE;
+	    // Log message
+	END_IF;
+	
+	IF #execute_enter_automatic THEN
+	    // Add the logic for entering automatic mode
+	    #execute_enter_automatic := FALSE;
+	    // Log message
+	END_IF;
+	
+	IF #execute_exit_automatic THEN
+	    // Add the logic for exiting automatic mode
+	    #execute_exit_automatic := FALSE;
+	    // Log message
+	END_IF;
+	
+	
+	IF #operation_mode.StateAutAut THEN
+	    // Log message
+	    IF #operation_mode.StateChannel AND #operation_mode.StateAutAut THEN
+	        IF #operation_mode.StateOffAct OR #operation_mode.StateOpAct THEN
+	            // Enter Automatic Mode
+	            #prev_mode_is_off := #operation_mode.StateOffAct;
+	            #prev_mode_is_op := #operation_mode.StateOpAct;
+	            
+	            #operation_mode.StateOpAct := FALSE;
+	            #operation_mode.StateAutAct := TRUE;
+	            #operation_mode.StateOffAct := FALSE;
+	            
+	            IF #prev_mode_is_off THEN
+	                #execute_exit_offline := TRUE;
+	            ELSIF #prev_mode_is_op THEN
+	                #execute_exit_operator := TRUE;
+	            END_IF;
+	            #execute_enter_automatic := TRUE;
+	            #operation_mode.SrcIntAct := TRUE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.StateAutOp THEN
+	    // Log message
+	    IF NOT #operation_mode.StateChannel AND #operation_mode.StateAutOp THEN
+	        IF #operation_mode.StateOffAct OR #operation_mode.StateOpAct THEN
+	            // Enter Automatic Mode
+	            #prev_mode_is_off := #operation_mode.StateOffAct;
+	            #prev_mode_is_op := #operation_mode.StateOpAct;
+	            
+	            #operation_mode.StateOpAct := FALSE;
+	            #operation_mode.StateAutAct := TRUE;
+	            #operation_mode.StateOffAct := FALSE;
+	            
+	            IF #prev_mode_is_off THEN
+	                #execute_exit_offline := TRUE;
+	            ELSIF #prev_mode_is_op THEN
+	                #execute_exit_operator := TRUE;
+	            END_IF;
+	            #execute_enter_automatic := TRUE;
+	            #operation_mode.SrcIntAct := TRUE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            #operation_mode.StateAutOp := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.StateOffAut THEN
+	    // Log message
+	    IF #operation_mode.StateChannel AND #operation_mode.StateOffAut AND #switch_to_offline_mode_allowed THEN
+	        IF #operation_mode.StateAutAct OR #operation_mode.StateOpAct THEN
+	            // Enter Offline Mode
+	            #prev_mode_is_op := #operation_mode.StateOpAct;
+	            #prev_mode_is_aut := #operation_mode.StateAutAct;
+	            
+	            #operation_mode.StateOpAct := FALSE;
+	            #operation_mode.StateAutAct := FALSE;
+	            #operation_mode.StateOffAct := TRUE;
+	            
+	            IF #prev_mode_is_op THEN
+	                #execute_exit_operator := TRUE;
+	            ELSIF #prev_mode_is_aut THEN
+	                #execute_exit_automatic := TRUE;
+	            END_IF;
+	            #execute_enter_offline := TRUE;
+	            #operation_mode.SrcIntAct := FALSE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.StateOffOp THEN
+	    // Log message
+	    IF NOT #operation_mode.StateChannel AND #operation_mode.StateOffOp AND #switch_to_offline_mode_allowed THEN
+	        IF #operation_mode.StateAutAct OR #operation_mode.StateOpAct THEN
+	            // Enter Offline Mode
+	            #prev_mode_is_op := #operation_mode.StateOpAct;
+	            #prev_mode_is_aut := #operation_mode.StateAutAct;
+	            
+	            #operation_mode.StateOpAct := FALSE;
+	            #operation_mode.StateAutAct := FALSE;
+	            #operation_mode.StateOffAct := TRUE;
+	            
+	            IF #prev_mode_is_op THEN
+	                #execute_exit_operator:= TRUE;
+	            ELSIF #prev_mode_is_aut THEN
+	                #execute_exit_automatic:= TRUE;
+	            END_IF;
+	            #execute_enter_offline := TRUE;
+	            #operation_mode.SrcIntAct := FALSE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            #operation_mode.StateOffOp := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.StateOpAut THEN
+	    // Log message
+	    IF #operation_mode.StateChannel AND #operation_mode.StateOpAut THEN
+	        IF #operation_mode.StateOffAct OR #operation_mode.StateAutAct THEN
+	            // Enter Operator Mode
+	            #prev_mode_is_off := #operation_mode.StateOffAct;
+	            #prev_mode_is_aut := #operation_mode.StateAutAct;
+	            
+	            #operation_mode.StateOpAct := TRUE;
+	            #operation_mode.StateAutAct := FALSE;
+	            #operation_mode.StateOffAct := FALSE;
+	            
+	            IF #prev_mode_is_off THEN
+	                #execute_exit_offline := TRUE;
+	            ELSIF #prev_mode_is_aut THEN
+	                #execute_exit_automatic:= TRUE;
+	            END_IF;
+	            #execute_enter_operator := TRUE;
+	            #operation_mode.SrcIntAct := FALSE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.StateOpOp THEN
+	    // Log message
+	    IF NOT #operation_mode.StateChannel AND #operation_mode.StateOpOp THEN
+	        IF #operation_mode.StateOffAct OR #operation_mode.StateAutAct THEN
+	            // Enter Operator Mode
+	            #prev_mode_is_off := #operation_mode.StateOffAct;
+	            #prev_mode_is_aut := #operation_mode.StateAutAct;
+	            
+	            #operation_mode.StateOpAct := TRUE;
+	            #operation_mode.StateAutAct := FALSE;
+	            #operation_mode.StateOffAct := FALSE;
+	            
+	            IF #prev_mode_is_off THEN
+	                #execute_exit_offline := TRUE;
+	            ELSIF #prev_mode_is_aut THEN
+	                #execute_exit_automatic := TRUE;
+	            END_IF;
+	            #execute_enter_operator := TRUE;
+	            #operation_mode.SrcIntAct := FALSE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            #operation_mode.StateOpOp := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.SrcExtAut THEN
+	    IF NOT #operation_mode.StateOffAct AND #operation_mode.SrcExtAut THEN
+	        IF #operation_mode.SrcChannel THEN
+	            #operation_mode.SrcIntAct := FALSE;
+	            #operation_mode.SrcExtAct := TRUE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.SrcExtOp THEN
+	    IF NOT #operation_mode.StateOffAct AND #operation_mode.SrcExtOp THEN
+	        IF NOT #operation_mode.SrcChannel THEN
+	            #operation_mode.SrcIntAct := FALSE;
+	            #operation_mode.SrcExtAct := TRUE;
+	            #operation_mode.SrcExtOp := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.SrcIntAut THEN
+	    IF NOT #operation_mode.StateOffAct AND #operation_mode.SrcIntAut THEN
+	        IF #operation_mode.SrcChannel THEN
+	            #operation_mode.SrcIntAct := TRUE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	IF #operation_mode.SrcIntOp THEN
+	    IF NOT #operation_mode.StateOffAct AND #operation_mode.SrcIntOp THEN
+	        IF NOT #operation_mode.SrcChannel THEN
+	            #operation_mode.SrcIntAct := TRUE;
+	            #operation_mode.SrcExtAct := FALSE;
+	            #operation_mode.SrcIntOp := FALSE;
+	            // Log message
+	        END_IF;
+	    END_IF;
+	END_IF;
+	
+	
+END_FUNCTION_BLOCK
+

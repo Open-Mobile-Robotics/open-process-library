@@ -1,0 +1,24 @@
+﻿TYPE "UDT_OperationSourceMode"
+VERSION : 0.1
+   STRUCT
+      StateChannel : Bool;
+      StateOffAut : Bool;
+      StateOpAut : Bool;
+      StateAutAut : Bool;
+      StateOffOp : Bool;
+      StateAutOp : Bool;
+      StateOpOp : Bool;
+      StateAutAct : Bool;
+      StateOffAct : Bool;
+      StateOpAct : Bool;
+      SrcChannel : Bool;
+      SrcExtAut : Bool;
+      SrcIntOp : Bool;
+      SrcIntAut : Bool;
+      SrcExtOp : Bool;
+      SrcIntAct : Bool;
+      SrcExtAct : Bool;
+   END_STRUCT;
+
+END_TYPE
+
