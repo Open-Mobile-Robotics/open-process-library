@@ -1,0 +1,12 @@
+﻿TYPE "UDT_ProcedureControl"
+VERSION : 0.1
+   STRUCT
+      ProcedureOp : Int;
+      ProcedureInt : Int;
+      ProcedureExt : Int;
+      ProcedureCur : Int;
+      ProcedureReq : Int;
+   END_STRUCT;
+
+END_TYPE
+

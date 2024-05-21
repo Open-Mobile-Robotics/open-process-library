@@ -1,0 +1,67 @@
+﻿FUNCTION_BLOCK "FB_ProcedureControl"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR 
+      procedures { S7_SetPoint := 'False'} : Array[0..10] of "UDT_ProcedureControl";
+      op_src_mode : "UDT_OperationSourceMode";
+      attributes : "UDT_ProcedureControl";
+      default_procedure_id { S7_SetPoint := 'True'} : Int;
+      valid_value : Bool;
+   END_VAR
+
+
+BEGIN
+	// Handlers for procedure attribute changes
+	IF #op_src_mode.StateOpAct THEN
+	    #attributes.ProcedureOp := #attributes.ProcedureReq;
+	    // Log message: 'ProcedureOp set to %s' % attributes.ProcedureOp
+	    IF #attributes.ProcedureOp >= 0 AND #attributes.ProcedureOp <= 10 THEN
+	        #attributes.ProcedureReq := #attributes.ProcedureOp;
+	        // Log message: 'ProcedureReq set to %s' % attributes.ProcedureReq
+	 //   ELSE
+	        // Log message: 'ProcedureReq cannot be set to %s (out of range)' % attributes.ProcedureOp
+	    END_IF;
+	END_IF;
+	
+	IF #op_src_mode.StateAutAct AND #op_src_mode.SrcIntAct THEN
+	    #attributes.ProcedureInt := #attributes.ProcedureReq;
+	    // Log message: 'ProcedureInt set to %s' % attributes.ProcedureInt
+	    IF #attributes.ProcedureInt >= 0 AND #attributes.ProcedureInt <= 10 THEN
+	        #attributes.ProcedureReq := #attributes.ProcedureInt;
+	        // Log message: 'ProcedureReq set to %s' % attributes.ProcedureReq
+	   // ELSE
+	        // Log message: 'ProcedureReq cannot be set to %s (out of range)' % attributes.ProcedureInt
+	    END_IF;
+	END_IF;
+	
+	IF #op_src_mode.StateAutAct AND #op_src_mode.SrcExtAct THEN
+	    #attributes.ProcedureExt := #attributes.ProcedureReq;
+	    // Log message: 'ProcedureExt set to %s' % attributes.ProcedureExt
+	    IF #attributes.ProcedureExt >= 0 AND #attributes.ProcedureExt <= 10 THEN
+	        #attributes.ProcedureReq := #attributes.ProcedureExt;
+	        // Log message: 'ProcedureReq set to %s' % attributes.ProcedureReq
+	  //  ELSE
+	        // Log message: 'ProcedureReq cannot be set to %s (out of range)' % attributes.ProcedureExt
+	    END_IF;
+	END_IF;
+	
+	// Validate the requested procedure value
+	IF #attributes.ProcedureReq >= 0 AND #attributes.ProcedureReq <= 10 THEN
+	    #valid_value := TRUE;
+	ELSE
+	    #valid_value := FALSE;
+	END_IF;
+	
+	// Set ProcedureCur to ProcedureReq if valid
+	IF #valid_value THEN
+	    #attributes.ProcedureCur := #attributes.ProcedureReq;
+	    // Log message: 'ProcedureCur set to %s' % attributes.ProcedureCur
+	END_IF;
+	
+	// Procedure parameter application logic (simplified for SCL)
+	// Assuming that procedure parameters are applied here
+	// You might want to add specific logic for each procedure
+	// Example: IF attributes.ProcedureCur = 1 THEN apply_procedure_1_parameters(); END_IF;
+	
+END_FUNCTION_BLOCK
+

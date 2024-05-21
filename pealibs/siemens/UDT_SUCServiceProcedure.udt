@@ -1,0 +1,17 @@
+﻿TYPE "UDT_SUCServiceProcedure"
+VERSION : 0.1
+   STRUCT
+      tag_name : String;
+      tag_description : String;
+      WQC : Int;
+      IsSelfCompleting : Bool;
+      ProcedureId : Int;
+      IsDefault : Bool;
+      procedure_parameters { S7_SetPoint := 'False'} : Array[0..10] of "UDT_SUCOperationElement";
+      process_value_ins : Array[0..10] of "UDT_SUCIndicatorElement";
+      report_values : Array[0..10] of "UDT_SUCIndicatorElement";
+      process_value_outs : Array[0..10] of "UDT_SUCIndicatorElement";
+   END_STRUCT;
+
+END_TYPE
+

@@ -1,0 +1,9 @@
+﻿TYPE "UDT_Procedure"
+VERSION : 0.1
+   STRUCT
+      ProcedureId : Int;
+      IsDefault : Bool;
+   END_STRUCT;
+
+END_TYPE
+

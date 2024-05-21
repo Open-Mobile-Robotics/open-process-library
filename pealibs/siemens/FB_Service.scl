@@ -1,0 +1,83 @@
+﻿FUNCTION_BLOCK "FB_Service"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT 
+      tag_name : String;
+      tag_description : String;
+   END_VAR
+
+   VAR 
+      op_src_mode { S7_SetPoint := 'False'} : "FB_OperationSourceMode";
+      procedures { S7_SetPoint := 'True'} : Array[0..1] of Bool;
+      procedure_control { S7_SetPoint := 'False'} : "FB_ProcedureControl";
+      configuration_parameters : Array[0..1] of "UDT_SUCOperationElement";
+      state_str { S7_SetPoint := 'True'} : String;
+      "Int" : Int;
+   END_VAR
+
+
+BEGIN
+	// Initialization
+	#op_src_mode.operation_mode.StateOffAct := FALSE;
+	#procedure_control.op_src_mode := #op_src_mode.operation_mode;
+	
+	// State change callback
+	IF #op_src_mode.operation_mode.StateOffAct THEN
+	    RETURN;
+	END_IF;
+	
+	// Get current state as string (placeholder for actual state machine logic)
+	#state_str := 'idle'; // Example state, replace with actual logic
+	
+	// Placeholder for state-specific actions
+	CASE #state_str OF
+	    'idle':
+	        #op_src_mode.operation_mode.StateOffAct := TRUE;
+	    'starting':
+	        // Implement starting logic here
+	    'execute':
+	        // Implement execute logic here
+	    'completing':
+	        // Implement completing logic here
+	    'completed':
+	        // Implement completed logic here
+	    'pausing':
+	        // Implement pausing logic here
+	    'paused':
+	        // Implement paused logic here
+	    'resuming':
+	        // Implement resuming logic here
+	    'holding':
+	        // Implement holding logic here
+	    'held':
+	        // Implement held logic here
+	    'unholding':
+	        // Implement unholding logic here
+	    'stopping':
+	        // Implement stopping logic here
+	    'stopped':
+	        // Implement stopped logic here
+	    'aborting':
+	        // Implement aborting logic here
+	    'aborted':
+	        // Implement aborted logic here
+	    'resetting':
+	        // Implement resetting logic here
+	    ELSE
+	        // Default case
+	END_CASE;
+	
+	// Apply configuration parameters
+	FOR #Int := 1 TO 10 DO
+	    IF #configuration_parameters[#Int].tag_name <> '' THEN
+	        // Placeholder for the configuration_parameter.set_v_out() method
+	        // SetVOut(configuration_parameters[i]);
+	    END_IF;
+	END_FOR;
+	
+	// Call the existing ProcedureControl function block
+	#procedure_control();
+	// Call the existing OperationSourceMode function block
+	#op_src_mode();
+END_FUNCTION_BLOCK
+

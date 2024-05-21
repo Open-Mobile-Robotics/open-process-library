@@ -1,0 +1,14 @@
+﻿TYPE "UDT_SUCServiceControl"
+VERSION : 0.1
+   STRUCT
+      tag_name : String;
+      tag_description : String;
+      OSLevel : Int;
+      WQC : Int;
+      PosTextID : Int;
+      InteractQuestionID : Int;
+      InteractAnswerID : Int;
+   END_STRUCT;
+
+END_TYPE
+

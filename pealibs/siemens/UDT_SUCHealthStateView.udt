@@ -1,0 +1,10 @@
+﻿TYPE "UDT_SUCHealthStateView"
+VERSION : 0.1
+   STRUCT
+      tag_name : String;
+      tag_description : String;
+      WQC : Int;
+   END_STRUCT;
+
+END_TYPE
+
