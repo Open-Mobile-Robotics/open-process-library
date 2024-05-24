@@ -1,0 +1,127 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+########################
+### Canonical Types  ###
+########################
+
+DMP_EDBPC:
+  guid: "9e811b60-42ab-4806-b816-c3b44deb654f"
+  description: "Stand-alone building pressure control damper."
+  is_canonical: true
+  implements:
+  - DMP
+  - EDBPC
+  opt_uses:
+  - high_building_air_static_pressure_alarm_1
+  - high_building_air_static_pressure_alarm_2
+  - high_building_air_static_pressure_alarm_3
+  - low_building_air_static_pressure_alarm_1
+  - low_building_air_static_pressure_alarm_2
+  - low_building_air_static_pressure_alarm_3
+
+DMP_EDM:
+  guid: "a79e39e1-8b39-4fa7-8ce5-437e867eda34"
+  description: "Exhaust damper monitoring."
+  is_canonical: true
+  implements:
+  - DMP
+  - EDM
+
+DMP_ED:
+  guid: "f94434b4-3b01-4a69-a31c-9cc6e1afbc64"
+  description: "Exhaust control damper."
+  is_canonical: true
+  uses:
+  - exhaust_air_static_pressure_sensor
+  implements:
+  - DMP
+  - ED
+
+DMP_SDBPC:
+  guid: "f475383f-8570-4813-8039-54c637e9be9a"
+  description: "Exhaust control damper."
+  is_canonical: true
+  implements:
+  - DMP
+  - SDBPC
+
+DMP_SDBPC_RMM:
+  guid: "c161977e-6835-477e-a806-b3eca5348ad7"
+  description: "Back-pressure modulating damper (for pressure control of an AHU)."
+  is_canonical: true
+  implements:
+  - DMP
+  - SDBPC
+  - RMM
+
+DMP_DICM:
+  guid: "23c7940d-76b5-4605-97d6-95fe8829acbc"
+  description: "Controlling and monitoring damper isolation system."
+  is_canonical: true
+  implements:
+  - DMP
+  - DICM
+  opt_uses:
+  - control_mode
+  - schedule_run_command
+  - run_command
+  - run_status
+  - run_mode
+  - lost_power_alarm
+
+DMP_EDBPC_ZTM:
+  guid: "8afff12c-042d-492b-a1b2-e8ee2dcb780e"
+  description: "Stand-alone building pressure control damper."
+  is_canonical: true
+  implements:
+  - DMP
+  - EDBPC
+  - ZTM
+
+DMP_ZSPC_EFM:
+  guid: "18dc78f6-6054-450f-b265-80d25f31b545"
+  description: "Stand-alone zone pressure control damper with exhaust air flowrate monitoring."
+  is_canonical: true
+  implements:
+  - DMP
+  - ZSPC
+  - EFM
+
+###################################
+### Existing Non-standard Types ###
+###################################
+
+DMP_NONCANONICAL_1:
+  guid: "8c884e0d-0243-484f-ac9c-4e9240e05a16"
+  description: "Non-standard type."
+  implements:
+  - DMP
+  uses:
+  - east_building_air_static_pressure_sensor
+  - return_air_damper_command
+  - supply_air_damper_percentage_command_1
+  - supply_air_damper_percentage_command_2
+  - west_building_air_static_pressure_sensor
+
+DMP_BPC_NONCANONICAL_1:
+  guid: "c7bba727-0cec-4348-9343-b7a9072d98dc"
+  description: "Non-standard type."
+  implements:
+  - DMP
+  - BPC
+  - REMAP_REQUIRED # Should probably be split into two separate dampers. Will then match canonical.
+  uses:
+  - east_exhaust_air_damper_percentage_command
+  - west_exhaust_air_damper_percentage_command

@@ -1,0 +1,69 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+########################
+### Canonical Types  ###
+########################
+
+TK_LHLM:
+  guid: "f6beac97-8d0b-4668-a7a4-0352b7205ba2"
+  description: "Tank with high and low water level monitoring."
+  is_canonical: true
+  implements:
+  - /TK # Inherits from global namespace
+  - LHLM
+
+TK_LHLM_WDT:
+  guid: "c40eb02a-188a-4440-a88e-bb67f8b9c3d5"
+  description: "Tank with temperature differential monitoring with high and low water level monitoring."
+  is_canonical: true
+  implements:
+  - /TK # Inherits from global namespace
+  - LHLM
+  - WDT
+
+TK_LHLM_SWTM:
+  guid: "f14a9538-b90b-4079-b087-ee1d4883d89b"
+  description: "Tank with supply water temperature monitoring with high and low water level monitoring."
+  is_canonical: true
+  implements:
+  - /TK # Inherits from global namespace
+  - LHLM
+  - SWTM
+
+TK_SWTC_PHWTC:
+  guid: "afec4cde-0aa9-4f75-9cf8-1fa1512fd49a"
+  description: "Tank with supply water temperature control and potable water temperature monitoring."
+  is_canonical: true
+  implements:
+  - /TK # Inherits from global namespace
+  - SWTC
+  - PHWTC
+
+TK_LM_PLPM:
+  guid: "b523b52b-ee5d-42a8-95dd-cf64ccd87488"
+  description: "Tank with water level and pipeline pressure monitoring."
+  is_canonical: true
+  implements:
+  - /TK # Inherits from global namespace
+  - LM
+  - PLPM
+
+TK_LM:
+  guid: "ae408041-ad81-41af-8dac-d05cd778ca1c"
+  description: "Tank with water level monitoring."
+  is_canonical: true
+  implements:
+  - /TK # Inherits from global namespace
+  - LM

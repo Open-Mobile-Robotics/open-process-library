@@ -1,0 +1,164 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+EM_PWM:
+  guid: "226f9b78-23c9-4a80-b468-deb9e67b6877"
+  description: "Power meter with basic power monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+
+EM_PWM_VCM:
+  guid: "09ec52b9-707e-4df2-a1c7-068225bd6ac4"
+  description: "Power meter with basic power, current and voltage monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - VCM
+
+EM_PLPM:
+  guid: "e377648e-bbec-46ff-9a05-c9b362582e63"
+  description: "Power meter with basic Phase-level power monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PLPM
+
+EM_PWMRDM:
+  guid: "736acd34-32b5-45d7-8695-e1204e654ee5"
+  description: "Energy metering from Grid Electricity and Diesel Generator."
+  is_canonical: true
+  implements:
+  - EM
+  - PWMRDM
+
+EM_PWM_PVCM:
+  guid: "c0bd0596-fbf2-49f4-b26f-69c18d8080b0"
+  description: "Power meter with phase level voltage and current monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - PVCM
+  opt_uses:
+  - reactive_energy_accumulator
+  - apparent_energy_accumulator
+
+EM_PWM_AVCM:
+  guid: "441a3b57-05e7-426d-bed9-061f28f21b3a"
+  description: "Power meter with basic power monitoring and averaging."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - AVCM
+
+EM_PWM_PLPM_PVCM:
+  guid: "8298fe4e-453b-43c1-aaac-fbdca55ba16b"
+  description: "Power meter with phase level voltage, current, and power monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - PLPM
+  - PVCM
+
+EM_PWM_AVCM_PVCM:
+  guid: "ab725e34-0009-4595-8603-28d902e1b1fa"
+  description: "Power meter with phase level voltage and current monitoring (and averaging)."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - AVCM
+  - PVCM
+
+EM_PWM_AVCM_PLPM_PVCM:
+  guid: "bb6cd7a4-c5c4-45a3-abad-0f5ca4fce571"
+  description: "The typical ION meter (Bay Area standard)."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - AVCM
+  - PLPM
+  - PVCM
+
+EM_PWM_PWMRDM:
+  guid: "5529f460-e69a-494d-927c-d516e6637b60"
+  description: "Energy metering from Grid Electricity and Diesel Generator with power monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - PWMRDM
+
+EM_PWM_AVCM_PWMRDM:
+  guid: "6a84711c-3663-4e0b-bd84-ac996db4838d"
+  description: "Energy metering from Grid Electricity and Diesel Generator with power, current, voltage monitoring."
+  is_canonical: true
+  implements:
+  - EM
+  - PWM
+  - AVCM
+  - PWMRDM
+
+#############################
+### Non-Canonical Devices ###
+#############################
+
+EM_ION:
+  guid: "c90a2059-449c-4f49-813a-e72e25da9c50"
+  description: "The typical ION meter (Bay Area standard)"
+  implements:
+  - EM_PWM_AVCM_PLPM_PVCM
+  - DEPRECATED
+
+EM_PWM_NONCANONICAL_1:
+  guid: "5063ee14-dd44-4d34-a17c-9b0d4f5cff43"
+  description: "Non-standard type."
+  implements:
+  - EM_PWM
+  uses:
+  - average_line_current_sensor
+  - average_inter_line_voltage_sensor
+
+EM_PWM_PLPM_PVCM_NONCANONICAL_1:
+  guid: "8036dad1-17e1-4570-9649-4408a0b5358f"
+  description: "Non-standard type."
+  implements:
+  - EM_PWM_PLPM_PVCM
+  uses:
+  - average_line_neutral_voltage_sensor
+  - average_inter_line_voltage_sensor
+
+EM_PWM_NONCANONICAL_2:
+  guid: "6ea34c2f-d17e-4a23-9ca4-0eb6603ab8fb"
+  description: "Non-standard type."
+  implements:
+  - EM_PWM
+  uses:
+  - average_line_current_sensor
+  - average_inter_line_voltage_sensor
+
+EM_PWM_PLPM_PVCM_NONCANONICAL_2:
+  guid: "867a7be3-2023-49c2-a1da-4805abfaf9a0"
+  description: "SE PM5100 Meter"
+  uses:
+  - neutral_line_current_sensor
+  - apparent_energy_accumulator
+  implements:
+  - EM_PWM_PLPM_PVCM

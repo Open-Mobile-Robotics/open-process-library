@@ -1,0 +1,173 @@
+Understood, here's an expanded YAML file with standardized states, procedures, and enumerations relevant to MTP for a PEA:
+
+```yaml
+# Material Batch Control Standard States, Procedures, and Enumerations
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#    https://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Standard States for Material Batch Control in MTP
+
+states:
+  - state: ON
+    description: "Powered on."
+
+  - state: OFF
+    description: "Powered off."
+
+  - state: AUTO
+    description: "Running under automatic control."
+
+  - state: MANUAL
+    description: "Running under manual (hand) control."
+
+  - state: TWENTY_PERCENT
+    description: "Speed of 20 percent of the maximum."
+
+  - state: FORTY_PERCENT
+    description: "Speed of 40 percent of the maximum."
+
+  - state: SIXTY_PERCENT
+    description: "Speed of 60 percent of the maximum."
+
+  - state: EIGHTY_PERCENT
+    description: "Speed of 80 percent of the maximum."
+
+  - state: OPEN
+    description: "Open position; typically for a valve, damper, or other pass-through."
+
+  - state: CLOSED
+    description: "Closed position; typically for a valve, damper, or other pass-through."
+
+  - state: OCCUPIED
+    description: "Occupied sensor state or operation mode."
+
+  - state: UNOCCUPIED
+    description: "Unoccupied sensor state or operation mode."
+
+  - state: ACTIVE
+    description: "An action, activity, event, or operation is currently happening."
+
+  - state: INACTIVE
+    description: "An action, activity, event, or operation is not currently happening."
+
+  - state: ENABLED
+    description: "Something is enabled."
+
+  - state: DISABLED
+    description: "Something is disabled."
+
+  - state: PRESENT
+    description: "Something is currently materialized physically (e.g., flowrate_status is present)."
+
+  - state: ABSENT
+    description: "Something is currently not materialized (e.g., flowrate_status is absent)."
+
+  - state: NORMAL
+    description: "Function, state or flow which is an ideal or expected condition."
+
+  - state: REVERSED
+    description: "Function, state or flow which is opposed to the expected or normal condition."
+
+  - state: UNKNOWN
+    description: "The state is unknown."
+
+  - state: LOW
+    description: "Low speed or output setting."
+
+  - state: MEDIUM
+    description: "Medium speed or output setting."
+
+  - state: HIGH
+    description: "High speed or output setting."
+
+  - state: NORTH
+    description: "Cardinal direction; opposite of south."
+
+  - state: SOUTH
+    description: "Cardinal direction; opposite of north."
+
+  - state: EAST
+    description: "Cardinal direction; opposite of west."
+
+  - state: WEST
+    description: "Cardinal direction; opposite of east."
+
+# Standard Procedures for Material Batch Control in MTP
+
+procedures:
+  - procedure: STARTUP
+    description: "Procedure to start up the system or equipment."
+
+  - procedure: SHUTDOWN
+    description: "Procedure to shut down the system or equipment."
+
+  - procedure: CLEANING
+    description: "Procedure for cleaning the system or equipment."
+
+  - procedure: MAINTENANCE
+    description: "Procedure for performing maintenance on the system or equipment."
+
+  - procedure: CALIBRATION
+    description: "Procedure for calibrating sensors and control systems."
+
+  - procedure: BATCH_PROCESSING
+    description: "Procedure for processing a batch of material."
+
+  - procedure: EMERGENCY_STOP
+    description: "Procedure to immediately stop the system or equipment in case of emergency."
+
+# Standard Enumerations for Material Batch Control in MTP
+
+enumerations:
+  - enumeration: SPEED
+    values:
+      - TWENTY_PERCENT
+      - FORTY_PERCENT
+      - SIXTY_PERCENT
+      - EIGHTY_PERCENT
+      - HIGH
+
+  - enumeration: POSITION
+    values:
+      - OPEN
+      - CLOSED
+
+  - enumeration: CONTROL_MODE
+    values:
+      - AUTO
+      - MANUAL
+
+  - enumeration: STATE
+    values:
+      - ACTIVE
+      - INACTIVE
+      - ENABLED
+      - DISABLED
+
+  - enumeration: PRESENCE
+    values:
+      - PRESENT
+      - ABSENT
+
+  - enumeration: CARDINAL_DIRECTION
+    values:
+      - NORTH
+      - SOUTH
+      - EAST
+      - WEST
+
+  - enumeration: STATUS
+    values:
+      - NORMAL
+      - REVERSED
+      - UNKNOWN
+```
+
+This YAML file includes standard states, procedures, and enumerations relevant to material batch control in a mining system, tailored to align with MTP for a PEA.

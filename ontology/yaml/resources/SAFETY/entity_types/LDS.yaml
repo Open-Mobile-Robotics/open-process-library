@@ -1,0 +1,117 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+LDS_WLDS:
+  guid: "b1cbee31-2314-470b-900f-0543bd8b9021"
+  description: "Basic leak detection device."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLDS
+
+LDS_WLDS_BCM:
+  guid: "e2d4f75a-d848-4653-8688-00102fbc6dee"
+  description: "Leak sensing device with broken cable status."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLDS
+  - BCM
+
+LDS_BC2X:
+  guid: "49057696-a063-4786-87f5-6ea4ef9ee19b"
+  description: "Leak sensing device with broken cable status."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLDS
+  - BC2X
+
+LDS_BC2X_LPA:
+  guid: "dd1b7b03-5246-4478-aef8-4ecdafb6d456"
+  description: "Leak sensing device with broken cable status."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLDS
+  - BC2X
+  - LPA
+  
+# General Types
+LDS_GASDET:
+  guid: "6b24e8cc-d5e3-4516-8097-54fe857ace17"
+  description: "Basic natural gas monitoring device."
+  is_canonical: true
+  implements:
+  - LDS
+  - GASDET
+  opt_uses:
+  - failed_alarm
+
+LDS_NHDET:
+  guid: "04b71e1e-530b-4288-8fdd-b1b5f05b13c3"
+  description: "Basic ammonia gas monitoring device"
+  is_canonical: true
+  implements:
+  - LDS
+  - NHDET
+
+LDS_H2M:
+  guid: "257bc52c-0010-4c25-a402-491fd3059e15"
+  description: "Hydrogen gas monitoring device with monitoring, typically used in battery room"
+  is_canonical: true
+  implements:
+  - LDS
+  - H2M
+  opt_uses:
+  - run_status
+  - failed_alarm
+
+LDS_WLA:
+  guid: "3eee4387-6d06-4fdc-99d9-70cb1e780cb3"
+  description: "Water Leak sensing device."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLA
+
+LDS_WLA2X:
+  guid: "60f43913-fff2-4d92-adcd-892ebea5e85d"
+  description: "Water Leak sensing device with two sensors."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLA2X
+
+LDS_WLA_BCM:
+  guid: "83a30f4d-8999-4b8e-ae4e-bd4eec29271d"
+  description: "Water Leak sensing and broken cable sensing device."
+  is_canonical: true
+  implements:
+  - LDS
+  - WLA
+  - BCM
+  opt_uses:
+  - water_leak_cable_distance_sensor
+  - failed_alarm
+
+LDS_WLCC:
+  guid: "1bc59b7b-cef7-4c39-b7b2-efaae420bf9f"
+  description: Leak detection sensor with array of leak cable-based sensors."
+  is_canonical: true
+  uses:
+  - water_leak_detection_alarm
+  - water_leak_alarm
+  - water_leak_cable_distance_sensor
+  - broken_cable_alarm

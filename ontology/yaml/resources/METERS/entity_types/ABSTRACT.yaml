@@ -1,0 +1,102 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+### ABSTRACT TYPES
+
+
+PWM:
+  guid: "960f7009-b4bd-4c68-b7d1-33555bff2148"
+  description: "Very basic power and energy monitoring only."
+  is_abstract: true
+  opt_uses:
+  - apparent_power_sensor
+  - reactive_power_sensor
+  - powerfactor_sensor
+  - line_frequency_sensor
+  - apparent_energy_accumulator
+  - reactive_energy_accumulator
+  uses:
+  - power_sensor
+  - energy_accumulator
+
+AVCM:
+  guid: "0329a2b4-d474-444e-82af-c6c0432a9f48"
+  description: "Average phase (line) level voltage and current monitoring. "
+  is_abstract: true
+  uses:
+  - average_inter_line_voltage_sensor # Line to line
+  - average_line_neutral_voltage_sensor
+  - average_line_current_sensor
+
+PLPM:
+  guid: "2007bb49-2824-4e76-8c8c-772d9204bcc2"
+  description: "Phase-level power monitoring."
+  is_abstract: true
+  opt_uses:
+  - phase1_powerfactor_sensor
+  - phase2_powerfactor_sensor
+  - phase3_powerfactor_sensor
+  - phase1_apparent_power_sensor
+  - phase2_apparent_power_sensor
+  - phase3_apparent_power_sensor
+  - phase1_reactive_power_sensor
+  - phase2_reactive_power_sensor
+  - phase3_reactive_power_sensor
+  uses:
+  - phase1_power_sensor
+  - phase2_power_sensor
+  - phase3_power_sensor
+
+PVCM:
+  guid: "97b8b9c1-21dd-4201-9424-c776e28de758"
+  description: "Phase-level current and voltage monitoring."
+  is_abstract: true
+  opt_uses:
+  - neutral_line_current_sensor
+  uses:
+  - phase1_line_current_sensor
+  - phase2_line_current_sensor
+  - phase3_line_current_sensor
+  - phase1_phase2_line_voltage_sensor
+  - phase1_phase3_line_voltage_sensor
+  - phase2_phase3_line_voltage_sensor
+  - phase1_neutral_line_voltage_sensor
+  - phase2_neutral_line_voltage_sensor
+  - phase3_neutral_line_voltage_sensor
+  
+PWMRDM:
+  guid: "4bfb27f6-0a27-48d9-8830-81c84d95c8ab"
+  description: "Energy monitoring from Electrical Grid and Generator with run hours monitoring."
+  is_abstract: true
+  uses:
+  - generator_energy_accumulator
+  - electricalgrid_energy_accumulator
+  - generator_run_time_accumulator
+  - electricalgrid_run_time_accumulator
+
+TPWM:
+  guid: "141dc3bf-85dd-4fce-9342-9a5462b3c274"
+  description: "Thermal power and thermal energy monitoring."
+  is_abstract: true
+  uses:
+    - thermal_energy_accumulator
+    - thermal_power_sensor
+
+VCM:
+  guid: "dc4d2839-c00d-4935-bc67-013f7721535f"
+  description: "Current and voltage monitoring"
+  is_abstract: true
+  uses:
+  - current_sensor
+  - voltage_sensor

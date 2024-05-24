@@ -1,0 +1,113 @@
+In the context of the Open Process Library ontology and MTP (Modular Type Package), concepts like feedback, current, request, vmin, vmax, etc., would be considered point types or subfields that describe the specific functions and states of the equipment and processes. Here is how these concepts can be integrated into the `subfields.yaml` file:
+
+```yaml
+# Open Process Library MTP Subfields
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#    https://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+aggregation:
+  average: "Average value; the arithmetic mean of a set of numeric values (e.g., average_material_temperature)."
+  max: "Maximum value; the largest value in a set of numeric values. Can be used for spatial or temporal aggregations."
+  min: "Minimum value; the smallest value in a set of numeric values. Can be used for spatial or temporal aggregations."
+  rootmeansquare: "Square root of the mean square (quadratic mean); measures the magnitude of a set of values."
+  total: "Sum total of some set of values (e.g., total_batch_count)."
+
+aggregation_descriptor:
+  fivesecondrolling: "Aggregation over advancing time intervals of five seconds."
+  thirtysecondrolling: "Aggregation over advancing thirty second time interval."
+  tenminutefixed: "Aggregation over fixed time intervals of ten minutes."
+
+component:
+  batch_controller: "A device used to manage and control batch processing operations."
+  mixer: "Equipment used to mix materials together in the batch process."
+  feeder: "Device used to add ingredients to the process in controlled amounts."
+  valve: "Component which meters the flow of liquids or gases within a system or device."
+  pump: "Component used for the distribution of liquid media (e.g., water, glycol)."
+  heater: "Component which provides heat to media (typically through the combustion of gas or electric resistance)."
+  cooler: "Device used to cool product or media (e.g., chiller for batch cooling)."
+  sensor: "Component used to measure various process parameters (e.g., temperature, pressure)."
+  actuator: "Device used to move or control a mechanism or system."
+  generator: "Component that converts motive power into electric power for use in an external circuit."
+  motor: "A machine, especially one powered by electricity or internal combustion, that supplies motive power for a vehicle or for some other device with moving parts."
+  transformer: "An electrical device which, by the principles of electromagnetic induction, transfers electrical energy from one electric circuit to another."
+  tank: "Storage device for media; for example, a thermal storage tank in a heating water system."
+  rectifier: "Component that converts alternating current to direct current."
+  circuitbreaker: "An electrical safety device designed to protect an electrical circuit from damage by short circuit or overload."
+  cable: "A length of wire, sometimes shielded externally, used for some purpose (e.g., steel braided wire for tensile support, CAT5 cable for communications)."
+  bearing: "Machine element that constrains relative motion to only the desired motion and reduces friction between moving parts."
+  coil: "Component that exchanges heat between two media streams."
+  compressor: "Component which drives refrigerant compression (and thus cooling processes) within a device or system."
+  condenser: "The component of a refrigeration system that condenses refrigerant through the removal of heat (i.e., refrigerant vapor is condensed into liquid through the removal of heat)."
+  controller: "Control loop, such as a PID controller."
+  damper: "Component which meters the flow of air within a system or device."
+  dehumidifier: "Device used to dehumidify air (typically through the removal of heat from the air)."
+  inverter: "Device or circuitry that changes direct current to alternating current (e.g., variable frequency drive)."
+  luminaire: "Complete lighting unit, consisting of one or more lamps, their socket/holders, wiring and optics such as lenses and reflectors to distribute the light."
+
+descriptor:
+  material: "Describes the type of material being processed (e.g., liquid, solid, gas)."
+  batch: "Pertaining to the batch processing operation."
+  feed: "Describes the action of adding materials to the process."
+  discharge: "Describes the action of removing materials from the process."
+  control: "Pertaining to the control mechanisms within the process."
+  temperature: "Describes temperature-related measurements or controls."
+  pressure: "Describes pressure-related measurements or controls."
+  flow: "Describes flow-related measurements or controls."
+  speed: "Describes the speed of rotating equipment (e.g., mixer speed)."
+  level: "Describes the level of materials within a container."
+  alarm: "A signal indicating a problem or abnormal condition."
+  mode: "The operational state of the equipment or process."
+  state: "Current status of a process or piece of equipment (e.g., running, stopped)."
+  command: "Instructions given to a device or system to perform a specific action."
+
+measurement:
+  temperature: "Measures the temperature of media within a process or system."
+  pressure: "Measures the force per unit area within a system or process."
+  flowrate: "Rate of fluid movement."
+  level: "The height of something with regard to a datum (e.g., the level of material in a tank)."
+  speed: "Measures the speed of rotating equipment (e.g., mixer speed)."
+  torque: "A force that causes rotation around an axis."
+  voltage: "Electrical potential difference between two reference points."
+  current: "Flow of electric charge."
+  frequency: "The rate of cycling within a process. Typically used to describe voltage (and amperage) oscillation within AC power distribution components."
+  power: "Rate of energy consumption (assumed context is electrical and real, unless otherwise modified)."
+  energy: "The quantitative property that must be transferred to an object to perform work (default electrical unless otherwise modified)."
+  vmin: "Minimum value of a measured parameter (e.g., minimum voltage)."
+  vmax: "Maximum value of a measured parameter (e.g., maximum voltage)."
+
+measurement_descriptor:
+  absolute: "Quality of media with respect to non-relativistic boundaries (e.g., absolute temperature)."
+  differential: "Measured difference between two reference points (e.g., differential_pressure)."
+  average: "Average value over a period of time or space (e.g., average_temperature)."
+  max: "Maximum value over a period of time or space (e.g., maximum_pressure)."
+  min: "Minimum value over a period of time or space (e.g., minimum_flowrate)."
+  rootmeansquare: "Square root of the mean square (quadratic mean); measures the magnitude of a set of values."
+  total: "Sum total of some set of values (e.g., total_energy_consumption)."
+  fixed: "Value fixed at a specific point in time or space (e.g., fixed_temperature)."
+  rolling: "Value calculated over a rolling time period (e.g., rolling_average_pressure)."
+
+point_type:
+  accumulator: "The total accumulated quantity (e.g., total energy accumulated)."
+  alarm: "A point that interprets some input values qualitatively (e.g., as good or bad, normal or in alarm, etc.). Alarms are always binary."
+  capacity: "A design parameter quantity (e.g., design motor power capacity). Is always a maximum limit."
+  counter: "Special case of accumulator that assumes integer values and non-dimensional units. For example, the field message_counter increments in integers whenever a message is sent."
+  command: "The signal given to make an action happen. Defaults to multistate unless used alongside a measurement_type."
+  count: "Total count of actions or requests."
+  label: "Identifying alias for component or system."
+  mode: "Distinct mode of operation within system. For example, economizer_mode has modes of 'enabled' or 'disabled.'"
+  requirement: "A lower limit design parameter (e.g., minimum flowrate requirement). Is always a lower limit."
+  sensor: "Component used to measure some quality of a system or process. In some instances, it can be feedback for an analog command (e.g., speed_percentage_sensor is the feedback from speed_percentage_command)."
+  setpoint: "Control target of process or system."
+  status: "The multistate value indicating an observed state in a piece of equipment, often indicating if a command was effected. It is a neutral observation (i.e., no quality judgment of 'good' or 'bad'). It also has no units of measurement; therefore, if combined with a measurement subfield, it will indicate that the field is the directional status based on some measurement of that type (e.g., power_status equates to an on/off value based on some inference of power)."
+  specification: "The specified design value for a particular operating condition (e.g., differential pressure specification)."
+  feedback: "Response or information provided by the system indicating the status or outcome of a command (e.g., position_feedback)."
+  request: "Signal or command issued to the system or equipment to perform a specific action (e.g., start_request)."
+  timestamp: "An instant in time, represented as a numeric offset from the epoch."
+```

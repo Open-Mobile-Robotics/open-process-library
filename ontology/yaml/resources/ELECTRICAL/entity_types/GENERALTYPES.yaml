@@ -1,0 +1,64 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+BATT:
+  guid: "b65c37c0-3820-4847-8bde-ae02cec805cb"
+  description: "Tag for all batteries. Batteries are used to store and discharge power for the use of a device or group of devices."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+
+UPS:
+  guid: "53a1903c-7b32-47da-a7ef-94b047a1aa50"
+  description: "Tag for all uninterruptible power supply (UPS) units. A UPS provides power in the event of grid power failure, protecting critical equipment from damage."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+  opt_uses:
+  - bypass_status
+
+PANEL:
+  guid: "f3f7245d-199a-4f73-845d-99c10991c778"
+  description: "Tag for all electrical panels."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+
+GEN:
+  guid: "c935c4f5-019c-4eb7-9f81-8dcf47e7a594"
+  description: "Tag for all generator units. Generators convert mechanical or chemical energy into electric energy."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+
+ATS:
+  guid: "f2e50348-ce8d-4c2e-9e82-0d6056d4c89c"
+  description: "Tag for automatic transfer switch (ATS) units. An ATS automatically transfers a power supply from its primary source to a backup source when it senses a failure or outage in the primary source."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+
+CB:
+  guid: "245e084f-a577-441d-a88e-662fd8396271"
+  description: "Tag for all circuit breakers. A circuit breaker is an electrical safety device designed to protect an electrical circuit from damage caused by overcurrent. Its basic function is to interrupt current flow to protect equipment and to prevent the risk of fire."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+
+TXMR:
+  guid: "89a9ced0-3ee2-4d12-94b4-84e7179766e6"
+  description: "Tag for transformers, which are devices that transfer electric energy from one alternating-current circuit to one or more other circuits by either increasing (stepping up) or reducing (stepping down) the voltage."
+  is_abstract: true
+  implements:
+  - EQUIPMENT

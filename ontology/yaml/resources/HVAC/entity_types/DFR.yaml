@@ -1,0 +1,96 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+########################
+### Canonical Types  ###
+########################
+
+DFR_SFSS_BYPSSPC_HT2SC:
+  guid: "506eb1cf-41cf-413c-8ff5-846ad971b8e3"
+  description: "Two-stage gas/electric duct furnace."
+  is_canonical: true
+  implements:
+  - DFR
+  - SFSS
+  - BYPSSPC
+  - HT2SC
+
+DFR_SFSS_BYPSSPC_HT2SC_RTM:
+  guid: "3af1d70e-45fb-4b87-9048-7be7201ab612"
+  description: "Two-stage gas/electric duct furnace."
+  is_canonical: true
+  implements:
+  - DFR
+  - SFSS
+  - BYPSSPC
+  - HT2SC
+  - RTM
+
+DFR_SFSS_BYPSSPC_HT3SC_RTM:
+  guid: "463909a7-38e2-4ff1-af86-206c366c1cec"
+  description: "Three-stage gas/electric duct furnace."
+  is_canonical: true
+  implements:
+  - DFR
+  - SFSS
+  - BYPSSPC
+  - HT3SC
+  - RTM
+
+DFR_SFSS_SFVSC_BYPSSPC_HTSC:
+  guid: "0a910676-cd24-4779-a8c9-bf8510e035a7"
+  description: "VFD converted gas/electric duct furnace."
+  is_canonical: true
+  implements:
+  - DFR
+  - SFSS
+  - SFVSC
+  - BYPSSPC
+  - HTSC
+
+
+###################################
+### Existing Non-standard Types ###
+###################################
+
+DFR_SFSS_BYPSSPC_HT2SC_RTM_NONCANONICAL_1:
+  guid: "0539ecd5-d85c-4abd-9d1f-855b0180dbaf"
+  description: "Non-standard type."
+  implements:
+  - DFR_SFSS_BYPSSPC_HT2SC_RTM
+  - DEPRECATED
+  uses:
+  - heating_percentage_command_1
+  - heating_percentage_command_2
+
+DFR_SFSS_BYPSSPC_HT2SC_RTM_NONCANONICAL_2:
+  guid: "34afae9b-41bc-4432-87ca-fe59c74413bc"
+  description: "Non-standard type."
+  implements:
+  - DFR_SFSS_BYPSSPC_HT2SC_RTM
+  - DEPRECATED
+  uses:
+  - heating_percentage_command_1
+  - heating_percentage_command_2
+
+DFR_SFSS_BYPSSPC_HT2SC_RTM_NONCANONICAL_3:
+  guid: "cec9c01e-11ff-483d-aae6-f192cc7b343f"
+  description: "Non-standard type."
+  implements:
+  - DFR_SFSS_BYPSSPC_HT3SC_RTM
+  - DEPRECATED
+  uses:
+  - heating_percentage_command_1
+  - heating_percentage_command_2
+  - heating_percentage_command_3

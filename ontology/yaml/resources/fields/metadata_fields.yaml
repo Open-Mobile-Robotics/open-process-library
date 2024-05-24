@@ -1,0 +1,105 @@
+Sure, here's a `metadata_fields.yaml` file that integrates the concepts from the MTP subfields, structured similarly to the example provided:
+
+```yaml
+# Open Process Library Metadata Field Definitions
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#    https://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+## Metadata Field Definitions
+
+literals:
+  # Labels: names and manufacturer codes only
+  - manufacturer_label
+  - model_label
+  - zone_use_label # Indicates the type of zone (e.g., lab, office, etc.)
+
+# Capacities: upper limits on specific capability
+- cooling_thermal_power_capacity:
+    fixed_min: 0.0
+    flexible_max: 2930710.7
+- discharge_air_flowrate_capacity:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- discharge_fan_power_capacity:
+    fixed_min: 0.0
+    flexible_max: 100000.0
+- exhaust_air_flowrate_capacity:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- exhaust_fan_power_capacity:
+    fixed_min: 0.0
+    flexible_max: 100000.0
+- flowrate_capacity: # Maximum flowrate
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- heating_input_thermal_power_capacity: # For BLRs, it is typical to have input and output ratings (which define the efficiency of the unit and therefore necessitate two SFNs with input and output (where output is implied)
+    fixed_min: 0.0
+    flexible_max: 2930710.7
+- heating_thermal_power_capacity:
+    fixed_min: 0.0
+    flexible_max: 2930710.7
+- thermal_power_capacity: # Used for HW or CHW systems, where 'heating' and 'cooling' are implied.
+    fixed_min: 0.0
+    flexible_max: 2930710.7
+- power_capacity: # Motor capacity
+    fixed_min: 0.0
+    flexible_max: 100000.0
+- return_air_flowrate_capacity:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- return_fan_power_capacity:
+    fixed_min: 0.0
+    flexible_max: 100000.0
+- supply_air_flowrate_capacity:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- supply_air_cooling_flowrate_capacity:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- supply_air_heating_flowrate_capacity:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- supply_fan_power_capacity:
+    fixed_min: 0.0
+    flexible_max: 100000.0
+
+# Specifications: general pointType for metadata
+- differential_pressure_specification: # Design differential pressure - not a limit, per se
+    flexible_min: -34473.78945
+    flexible_max: 344737.8945
+- efficiency_percentage_specification:
+    fixed_min: 0.0
+    fixed_max: 100.0
+
+# Requirements: lower limits on specific asset properties
+- flowrate_requirement: # Minimum flowrate
+    fixed_min: 0.0
+    flexible_max: 18.92706
+- outside_air_flowrate_requirement:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+- supply_air_ventilation_flowrate_requirement:
+    fixed_min: 0.0
+    flexible_max: 141.584233
+
+# Additional MTP-Specific Metadata Fields
+- feedback: # Feedback from the system or equipment
+    description: "Response or information provided by the system indicating the status or outcome of a command (e.g., position_feedback)."
+- current: # Current state or measurement
+    description: "Flow of electric charge."
+- request: # Request or command issued to the system or equipment
+    description: "Signal or command issued to the system or equipment to perform a specific action (e.g., start_request)."
+- vmin: # Minimum value of a measured parameter
+    description: "Minimum value of a measured parameter (e.g., minimum voltage)."
+- vmax: # Maximum value of a measured parameter
+    description: "Maximum value of a measured parameter (e.g., maximum voltage)."
+```
+
+This `metadata_fields.yaml` includes additional MTP-specific metadata fields and integrates them with the capacities, specifications, and requirements subfields.

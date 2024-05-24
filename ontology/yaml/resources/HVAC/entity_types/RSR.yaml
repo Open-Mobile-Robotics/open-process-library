@@ -1,0 +1,41 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+FARSR_UNDEFINED:
+  guid: "cd83cffe-fb37-4138-9ff0-9da7958eccf2"
+  description: "Fresh air distribution riser without any data points."
+  implements:
+  - FARSR
+
+RARSR_UNDEFINED:
+  guid: "6ae66620-c729-4726-8f7d-533e81725668"
+  description: "Return air riser without any data points."
+  implements:
+  - RARSR
+
+RSR_HHCD42_CPC:
+  guid: "374f5100-b148-47ac-b07b-d2bef0b556ef"
+  description: "Cooling or heating changeover function for radiant panels or fcu's. 4/2-pipe"
+  implements:
+  - RSR
+  - HHCD42
+  - CPC
+
+RSR_HHCD44_CPC:
+  guid: "bbd6959e-5a60-4b6a-b4ec-9d84b7c69fc5"
+  description: "Cooling or heating changeover function for radiant panels or fcu's. 4/4-pipe"
+  implements:
+  - RSR
+  - HHCD44
+  - CPC

@@ -1,0 +1,99 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+UPS_SS:
+  guid: "70d8719e-db43-4f6f-b44f-7047a4c30a26"
+  description: "Standard UPS unit with start stop."
+  is_canonical: true
+  implements:
+  - UPS
+  - SS
+
+
+UPS_IOBM:
+  guid: "5588b9bb-a6be-4b7b-b41d-301bbd2986cb"
+  description: "UPS with input and output electrical monitoring"
+  is_canonical: true
+  implements:
+  - UPS
+  - IOBM
+  opt_uses:
+  - input_frequency_sensor
+  - output_frequency_sensor
+  - bypass_frequency_sensor
+  - failed_alarm
+  - phase1_apparent_power_sensor
+  - phase2_apparent_power_sensor
+  - phase3_apparent_power_sensor
+  - line_frequency_sensor
+  - phase1_power_sensor
+  - phase2_power_sensor
+  - phase3_power_sensor  
+
+UPS_PPWM:
+  guid: "1f1b7090-165f-4f75-a789-9c22c53be6dd"
+  description: "UPS with phase power monitoring."
+  is_canonical: true
+  implements:
+  - UPS
+  - PPWM
+
+UPS_IOBM_BATM:
+  guid: "e6d89dac-b410-4968-87b8-ca21e6f4a99d"
+  description: "UPS with battery parameters and input output electrical monitoring"
+  is_canonical: true
+  implements:
+  - UPS
+  - IOBM
+  - BATM
+UPS_IOBM_PPWM_UPSBM:
+  guid: "decba346-0f1b-4094-9153-9ec044acb399"
+  description: "UPS with input and output electrical monitoring, phase power monitoring and battery monitoring."
+  is_canonical: true
+  implements:
+  - UPS
+  - IOBM
+  - PPWM
+  - UPSBM
+
+UPS_PWM:
+  guid: "64f90598-969d-4cf6-ace6-50793a46aed8"
+  description: "UPS with power monitoring."
+  is_canonical: true
+  implements:
+  - UPS
+  - PWM
+
+UPS_SS_UPSBM:
+  guid: "13ee6bee-a1d7-4158-845e-a59dc9c117fe"
+  description: "Basic UPS with battery monitoring"
+  is_canonical: true
+  implements:
+  - UPS
+  - SS
+  - UPSBM
+
+UPS_UPSTR:
+  guid: "19625580-f0d7-486e-a054-bb1eecd95b0a"
+  description: "Basic UPS with battery monitoring"
+  is_canonical: false
+  implements:
+  - UPS
+  uses:
+  - input_supply_mode
+  - battery_percentage_sensor
+  opt_uses:
+  - remaining_battery_time_sensor
+  - load_percentage_sensor
+  - output_apparent_power_sensor

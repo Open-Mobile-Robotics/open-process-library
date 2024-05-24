@@ -1,0 +1,292 @@
+# Open Process Library Ontology Configuration
+
+The Open Process Library ontology uses [YAML](http://yaml.org) syntax to define its models. The format allows users to specify subfields, fields, entity types, states, units, and connections in multiple namespaces. Files written in the format can be strictly validated for consistency and backwards compatibility with earlier versions.
+
+*   For an explanation of the existing abstract model see [model](model.md)
+*   For a conceptual explanation of the ontology see [ontology](ontology.md)
+
+- [Open Process Library Ontology Configuration](#open-process-library-ontology-configuration)
+  * [Namespaces and File Structure](#namespaces-and-file-structure)
+  * [Namespace-aware Components](#namespace-aware-components)
+  * [Namespace Agnostic Components](#namespace-agnostic-components)
+  * [Namespace Elevation](#namespace-elevation)
+  * [Configuration Syntax](#configuration-syntax)
+    + [Subfields](#subfields)
+    + [Fields and Multi-state groups](#fields-and-multi-state-groups)
+      - [Elevating Fields](#elevating-fields)
+    + [States](#states)
+    + [EntityTypes](#entitytypes)
+    + [Connections](#connections)
+    + [Units](#units)
+  * [Validation](#validation)
+  * [Notes](#notes)
+
+## Namespaces and File Structure
+
+Each namespace in the ontology has folders with reserved names for each type component: `fields`, `subfields`, `entity_types` and `states`. The global namespace has two additional folders `units` and `connections` (coming soon), as well as folders for each of the child namespaces.
+
+Child namespaces are defined by adding subfolders to the global namespace with the name of the child namespace. Child namespace names that overlap with reserved folder names are, obviously, not allowed. Only one level of child namespaces is allowed.
+
+File names and subfolder hierarchy below the reserved folder names are ignored for the purposes of constructing the ontology. All files in all folders under a reserved folder will be read and consolidated into the model as if they had been defined in a single file.
+
+## Namespace-aware Components
+
+Fields, EntityTypes and MultiStates all carry explicit namespaces. That is, if a user defines any of these components in a namespace and it cannot be [elevated](#elevating-fields) to the global namespace, it carries that qualifier everywhere in the system. Ex: `PROCESS/flow_rate_sensor`.
+
+Because of namespace elevation, states in field files and fields in entity type files can always be written with the namespace omitted. The only case where a namespace is required is when a user is referring to a non-elevated field in another namespace. This imposes a few constraints on components, which will be discussed later.
+
+## Namespace Agnostic Components
+
+**Subfields**: Unlike other components, subfields are not namespace aware. As a result, they are always used verbatim and should be defined in the global namespace whenever possible. Subfields defined in a non-global namespace are only available for use in that namespace and conflicting subfields in the local namespace will override the definition of the globally defined versions for any fields defined in that namespace.
+
+**Units and Connections**: Units and connections are always defined globally.
+
+## Namespace Elevation
+
+[Namespace elevation](ontology.md#namespace-elevation) is the concept of pushing definitions from child namespaces to the global namespace when doing so is guaranteed safe. Field definitions are subject to namespace elevation. Functionally this means that a field, regardless of where it is defined, will be considered global if it only uses subfields in the global namespace. From a syntax perspective, an elevated field can always be referenced without being fully qualified.
+
+## Configuration Syntax
+
+### Subfields
+
+Subfields are described in a folder with the name `subfields`. Subfields are primarily defined at the top level of the OPL ontology, but top level definitions for all except measurement subfields may be overridden in local namespaces (though this is discouraged).
+
+In order to minimize repetitive text, subfields are grouped by type, then defined as key:value mappings consisting of the subfield name and a definition. Example:
+
+```
+aggregation_descriptor:
+  daily: description
+  fivesecond: description
+  ...
+aggregation:
+  max: The largest value ...
+  min: The smallest value ...
+  ...
+component:
+  valve: ...
+  pump: ...
+descriptor:
+  ...
+measurement:
+  ...
+measurement_descriptor:
+  ...
+point_type:
+  setpoint: A value the system controls to on a particular dimension
+  ...
+```
+
+The value for the key is simply a free-text description of the subfield's meaning.
+
+The validation enforces that:
+
+*   All subfields begin with a lowercase alpha character
+*   No subfield names are duplicated within the namespace
+*   Measurement subfields are defined only in the global namespace
+*   All measurement subfields have mappings in the [units](#units) config
+
+### Fields and Multi-state groups
+
+Fields are described in a folder with the name `fields`. They can be configured in the global namespace or in individual namespaces. There is no particular preference for definition at the top level or in namespaces (since fields are elevated whenever possible). The parser should automatically sort fields into the global or local namespace depending on whether or not they can be elevated.
+
+Fields are added in fully constructed form using the `"literals"` tag[^5].
+
+```
+literals:
+- unit_flow_rate:
+  - AUTO
+  - MANUAL
+- valve_position_sensor:
+    flexible_min: 0
+    flexible_max: 100
+- pump_speed_command:
+    fixed_min: 0
+    fixed_max: 100
+- pressure_sensor:
+    fixed_min: 0
+    flexible_max: 1000
+```
+
+For numeric fields, users must define the default value range: the minimum and maximum expected values for the field across all entities that have the field. The range should be specified as a map containing exactly two entries:
+
+* the minimum, with a key of either `flexible_min` or `fixed_min`
+* the maximum, with a key of either `flexible_max` or `fixed_max`
+
+Each key should map to a double value, expressed in the SI unit for the field. "Fixed" means the value should never be changed and should always apply across all entities that have the field. For example, a percentage field may have an expected range of 0 to 100 regardless of the entity. "Flexible" means the value may be adjusted through the range calculation pipeline, which periodically calculates new ranges for fields by using the interquartile-range method on timeseries data. A range may consist of two flexible bounds, two fixed bounds, or one flexible bound and one fixed bound.
+
+For multistate fields (any field with a status, alarm, mode, or command point type, e.g. `unit_flow_rate` in the example above), users must define the valid states inline as a nested array. Each state is considered a reference to a state value in the global namespace unless a state with the same name is defined in the local namespace, in which case the definition is assumed to use the local version.
+
+Use of locally defined states across namespaces is not currently supported as it would require support for aliasing of unqualified state names[^2].
+
+See [Ontology Fields](ontology.md#fields) for more detail on field construction rules.
+
+The validation enforces that:
+
+*   fields only use defined subfields
+*   only one instance of a subfield set exists in each namespace
+*   fields follow construction rules
+*   only defined states are assigned to fields
+*   each state is only defined once in a multi-state group for a field
+*   default value range maps have exactly two entries: one "min" and one "max"
+*   default value ranges have a min that is less than the max
+
+#### Elevating Fields
+
+When building the ontology, any fields using all globally defined subcomponents are created in the global namespace. Field validation for duplicates is done in the namespace the field arrives in after elevation.
+
+### States
+
+States are described in a folder with the name `states`. States may be defined globally or in local namespaces, with a preference for global definitions for any state that is likely to be reusable.
+
+**Unlike fields, multistates are always namespaced based on the subfolder they reside in.** They are listed in a file called "states". Configuration is a simple key:value pairing of the name and the definition:
+
+```
+ON: This process is running
+OFF: This process is not running
+```
+
+Validation enforces:
+
+*   Keys are unique per namespace.
+*   Keys begin with an alpha character
+*   A test description is provided
+
+### EntityTypes
+
+Entity types are described in a folder with the name `entity_types`. Entity types are the most often namespaced component. Each Entity Type specifies the fields and inherited types that compose it. Entity Types are namespaced like fields and can use both locally and globally namespaced fields and types in their construction.
+
+A typical construction looks like this:
+
+
+*   `guid`: A GUID
+
+Certainly! Here's the continuation and completion of the Open Process Library Ontology Configuration document:
+
+```yaml
+PMP_FCV_VLV:
+  guid: '4d68ac84-786f-425c-9a65-097b1fb04c91' // auto-generated UUID v4 GUID
+  description: this is a common process automation device
+  is_abstract: false // note: this defaults to false if unspecified
+  allow_undefined_fields: false // note: this defaults to false if unspecified
+  is_canonical: false // defaults to false. See this doc for detail
+  implements:
+  - some_parent_type
+  - another_parent_type
+  uses:
+  - flow_rate_sensor
+  - valve_position_sensor
+  opt_uses:
+  - pressure_sensor
+  connections:  # NB: Connection constraints are not yet implemented
+  - unit_type: FEEDS
+  - system_type: CONTAINS
+```
+
+*   `guid`: A GUID (UUID v4 format) that is automatically generated by a GitHub Action when a new entity type is added to the ontology. This should not be manually provided. If any duplicates are found, the user must remove the duplicate so that the GitHub Action regenerates the missing GUID.
+*   `description`: A plain-text explanation of what this type represents. The definition is particularly important because types have inherent meaning independent of the fields they contain.
+*   `is_abstract`: Set true if this type cannot be assigned directly to an entity.
+*   `allow_undefined_fields`: Set true if entities of this type are allowed to define translations for fields that are not listed as required or optional on this type. Other types cannot inherit from this type if this value is set to true.
+*   `is_canonical`: Set true if this is a preferred type in your model.
+*   `implements`: Lists parents that this type will inherit fields and relationship constraints from.
+*   `uses`: Required fields for this type.
+*   `opt_uses`: Optional fields for this type.
+*   `connections`: Required connections this type must be a target of. Specification is `<source type>:<connection type>`.
+
+When specifying an entity, the user can add fields or other entities either in the local namespace or the global one verbatim, as the parser should be able to explicitly differentiate between whether or not the user's intent was to specify a local or global field or entity[^4]. Entries from other local namespaces are prefixed with `"<namespace>/"`.
+
+Validation enforces:
+
+*   GUIDs are present for all types, unique, and correctly formatted (this is handled automatically by a GitHub Action).
+*   There are no duplicate fields defined directly in `uses` or `opt_uses`.
+*   All assigned fields, relationships, and referenced types exist.
+*   All type names are unique per namespace.
+*   `is_abstract` and `allow_undefined_fields` are not both true.
+*   None of the types in `implements` have `allow_undefined_fields` set to true.
+*   Types have text descriptions (warning).
+
+### Connections
+
+Connections are described in a folder with the name `connections`. Connections can **only** be described in the global namespace, and the set of connections is intended to grow infrequently.
+
+Connections are defined by name with an associated description[^6]:
+
+```yaml
+FEEDS:
+  description: Source sends physical media (air, water, etc.) to Target
+CONTAINS:
+  description: Source physically contains target
+```
+
+Validation enforces:
+
+*   All connections are unique.
+*   All connections have definitions provided.
+
+### Units
+
+Units are described in a folder with the name `units`. They are **only** defined in the global namespace and are grouped by measurement subfield. For example:
+
+```yaml
+concentration:
+  parts_per_million: STANDARD
+current:
+  amperes: STANDARD
+  milliamperes:
+    multiplier: 0.001
+    offset: 0
+energy:
+  joules: STANDARD
+  kilowatt_hours:
+    multiplier: 3600000
+    offset: 0
+```
+
+Under each subfield name, the configuration defines a list of dimensional units of a single [Quantity Kind](https://qudt.org). One of the listed units must be listed as the `STANDARD` unit for the type. All of the `STANDARD` units for all subfields must belong to the same unit family, such as standard SI units. All units that are not standard must map to a `multiplier` and an `offset`. The conversion multiplier for a unit is the number to multiply by to convert a value using this unit to the standard unit. The offset is the number to add to convert a value using this unit to the standard unit.
+
+If a subfield needs to use the same set of units as another subfield, it is defined as an alias by providing the other subfield name instead of a list of units. For example:
+
+```yaml
+distance:
+  meters: STANDARD
+  feet:
+    multiplier: 0.3048
+    offset: 0
+  inches:
+    multiplier: 0.0254
+    offset: 0
+length: distance
+level: distance
+```
+
+Validation enforces:
+
+*   Each subfield only has units defined for it one time.
+*   Each dimensional unit is defined only once in the file.
+*   Exactly one `STANDARD` designation is made per subfield.
+*   Each subfield alias refers to a subfield that has units defined.
+*   Each non-standard unit specifies exactly one multiplier and one offset.
+*   Multiplier and offset values are numeric.
+
+## Validation
+
+The Open Process Library ontology contains a configuration validator that enforces all the constraints outlined above.
+
+The validator source code can be found [here](TODO:ADD PATH).
+
+The Validator is Python based, it takes the following arguments:
+
+*   original: a path pointing to the original files of the ontology.
+*   changed (optional): a path pointing to the changed files of the ontology.
+
+The validator can be run as following: `python3 validator.py --original=Users/foo/ontology/`
+
+## Notes
+
+[^2]: The reason for this requirement is so that compiled code for the ontology has clean enumerations.
+[^3]: The "literals" list would also be in its own document, if used.
+[^4]: An unstated assumption here is that the local version of a field is assumed to be used when a conflict exists between the local and global namespace. A user could explicitly specify a global namespace to override this with a leading "/'".
+[^5]: A construction syntax was originally envisioned to help related subfield permutations to auto-generate, but we found that in practice the number of fields was small enough that it was never implemented.
+[^6]: Longer form with `description` added as a separate key anticipates additional configuration functionality for fields.
+```
+
+This document provides a comprehensive configuration guide for the Open Process Library ontology, incorporating the concepts and tag naming guidelines discussed earlier.

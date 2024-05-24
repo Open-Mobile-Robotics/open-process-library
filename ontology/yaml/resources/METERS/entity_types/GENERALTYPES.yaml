@@ -1,0 +1,56 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#### GENERAL TYPES (BROAD CATEGORIES OF COMMON EQUIPMENT) ####
+MTR:
+  guid: "2f72cfcc-c161-44a4-b55c-17b2cc651ee2"
+  description: "Tag for all the meters."
+  is_abstract: true
+  implements:
+  - EQUIPMENT
+
+EM:
+  guid: "cba37f53-9e19-4498-80d1-6053d993f4ac"
+  description: "Tag for all the electrical meter types."
+  implements:
+  - MTR
+  is_abstract: true
+
+GM:
+  guid: "919ece3f-2f6f-4c9d-adcf-2a77eed49185"
+  description: "Tag for all gas meters."
+  implements:
+  - MTR
+  is_abstract: true
+
+FM:
+  guid: "e89d919e-ecfb-4852-aeab-c087b0fabf6d"
+  description: "Tag for all closed-loop system flow meters. Distinct from water meters which are open-loop systems."
+  is_abstract: true
+  implements:
+  - MTR  
+
+WM:
+  guid: "c1df623f-c71b-45a1-89eb-2bc7c82f291a"
+  description: "Tag for all water meters (open-loop), such as the main building water consumption meter."
+  implements:
+  - MTR
+  is_abstract: true
+
+HM:
+  guid: "9496631b-c154-4d86-857d-c2ffff88ffe4"
+  description: "Tag for all heat meters (cooling or heating), commonly referred to as BTU meters."
+  is_abstract: true
+  implements:
+  - MTR

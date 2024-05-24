@@ -1,0 +1,320 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Lighting device group
+
+LGRP_DC:
+  guid: "c2fde837-cb98-4a66-9455-8361030e72c0"
+  description: "Lighting group control module with brightness control."
+  is_canonical: true
+  implements:
+    - LGRP
+    - DC
+
+LGRP_DC_OS_SC:
+  guid: "96e4ec5a-6a0d-4460-9065-8efa3cdfbcb4"
+  description: "Lighting group with brightness control, occupancy sensor and scene control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - DC
+  - OS
+  - SC
+
+LGRP_OS_SCZ:
+  guid: "f7c9d33a-e1f4-43f4-87d7-cc63943b88d2"
+  description: "Lighing group control with occupancy and zone scene control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - SCZ
+
+LGRP_OS_LC_VADC:
+  guid: "d2a2a85a-94a3-4a98-adf3-93021b92ca1d"
+  description: "Standard lighting fixture group control with scene- and dimming control, based on scene and zone occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LC
+  - VADC
+
+LGRP_ROS_LC_VADC:
+  guid: "7b6493ea-d438-4e36-9b84-24b5c4f1685f"
+  description: "Standard lighting fixture group control with scene- and dimming control, based on scene and room occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - LC
+  - VADC
+
+LGRP_OS_LC_VADC_RC:
+  guid: "9032391c-3f85-4569-acdf-1bd55651dd8f"
+  description: "Standard lighting fixture group control with scene- and dimming control and knx actuators, based on scene and zone occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LC
+  - VADC
+  - RC
+
+LGRP_ROS_LC_VADC_RC:
+  guid: "297c6cff-5854-427c-9024-73d26011bdea"
+  description: "Standard lighting fixture group control with scene- and dimming control and knx actuators, based on scene and room occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - LC
+  - VADC
+  - RC
+
+LGRP_OS_RC:
+  guid: "252262d3-b690-44df-be21-f91e98d97a7c"
+  description: "Standard lighting fixture group control with knx actuators, controlled by wall mounted lighting switch or zone occupancy sensor"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - RC
+
+LGRP_ROS_RC:
+  guid: "96665167-7fc0-4ff9-895f-132425469b25"
+  description: "Standard lighting fixture group control with knx actuators, controlled by wall mounted lighting switch or room occupancy sensor"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - RC
+
+LGRP_OS_LSC_LC_VADC:
+  guid: "52ee727b-09fd-45e8-873d-225e6c0680e8"
+  description: "Standard lighting fixture group control with scene- and dimming control, based on scene and zone occupancy and/or light switch status"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LSC
+  - LC
+  - VADC
+
+LGRP_ROS_LSC_LC_VADC:
+  guid: "9f39f6ee-9813-40ee-abd1-579a1e3c280f"
+  description: "Standard lighting fixture group control with scene- and dimming control, based on scene and room occupancy and/or light switch status"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - LSC
+  - LC
+  - VADC
+
+LGRP_OS_LC_VADCRGB:
+  guid: "1391e0c4-da0e-42e6-b171-de1435667339"
+  description: "Standard lighting fixture group control with scene- and dimming control, based on scene and zone occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LC
+  - VADCRGB
+
+LGRP_ROS_LC_VADCRGB:
+  guid: "62602b0b-322a-407b-ac67-b50c852021cb"
+  description: "Standard lighting fixture group control with scene- and dimming control, based on scene and room occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - LC
+  - VADCRGB
+
+LGRP_OS_SC_LC_VADC_RC:
+  guid: "2e5cfa05-426e-48f7-9e36-05f05343e9e2"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and zone occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - SC
+  - LC
+  - VADC
+  - RC
+
+LGRP_ROS_SC_LC_VADC_RC:
+  guid: "9464ed52-73f9-4c91-ae99-6fb09b7fb218"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and room occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - SC
+  - LC
+  - VADC
+  - RC
+
+LGRP_OS_LC_VADCRGB_RC:
+  guid: "841615d7-db27-419d-8588-89caeb0ef09e"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and zone occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LC
+  - VADCRGB
+  - RC
+
+LGRP_ROS_LC_VADCRGB_RC:
+  guid: "7b9234df-2828-40ee-b323-e678a47e8470"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and room occupancy"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - LC
+  - VADCRGB
+  - RC
+
+LGRP_OS_LSC_LC_VADC_RC:
+  guid: "3f8d3c89-d8c5-4ed6-bca1-eb79b395178a"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and zone occupancy and/or light switch status"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LSC
+  - LC
+  - VADC
+  - RC
+
+LGRP_ROS_LSC_LC_VADC_RC:
+  guid: "b58b2ce2-b703-448b-96c1-4c147f4de159"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and room occupancy and/or light switch status"
+  is_canonical: true
+  implements:
+  - LGRP
+  - ROS
+  - LSC
+  - LC
+  - VADC
+  - RC
+
+LGRP_OS_IM_LSC_LC_PWM_SCZ:
+  guid: "d318d9b3-801a-41b4-9dcd-b8b3263f1096"
+  description: "Standard lighting fixture group control with scene control, dimming control and knx actuators,based on scene and room occupancy and/or light switch status"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - IM
+  - LSC
+  - PWM
+  - SCZ
+
+LGRP_OS_LSC_ENM:
+  guid: "ae816b36-5aea-43b2-a283-46b8eaf9f7af"
+  description: "Standard Lighting fixture group with occupancy based,area switch status and energy monitoring."
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS
+  - LSC
+  - ENM
+  opt_uses:
+  - total_failed_lamp_counter
+  - total_failed_wireless_device_counter
+  - total_failed_communication_counter
+
+LGRP_SS_DC_MS_LC_SC:
+  guid: "31414a96-c9f4-41e2-8706-19ee05e0a50a"
+  description: "Lighting group with brightness, motion sensing, scene control and illuminance control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - SS
+  - DC
+  - MS
+  - LC
+  - SC
+
+
+LGRP_SS_DC_MS_LC:
+  guid: "3e431926-748d-48b0-aa64-faebc5e34665"
+  description: "Lighting group with brightness, motion sensing and illuminance control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - SS
+  - DC
+  - MS
+  - LC
+
+LGRP_SS_DC_MS:
+  guid: "7e20131f-42b1-4534-a14e-f9c41af1e2bb"
+  description: "Lighting group with brightness control and motion sensing."
+  is_canonical: true
+  implements:
+  - LGRP
+  - SS
+  - DC
+  - MS
+
+#Noncanonical types
+LGRP_DC_MS_IM:
+  guid: "5a1e9a7c-0b8d-4eb4-9e97-6abfc696e382"
+  description: "Non-canonical lighting groups with brightness, motion sensing and illuminance monitoring"
+  is_canonical: false
+  implements:
+  - LGRP
+  - DC
+  - MS
+  - IM
+
+LGRP_OS_LC:
+  guid: "c6296635-f9e9-4dc4-b963-0a3d517e7d44"
+  description: "Standard lighting fixture group control with zone occupancy montoring and luminance control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS 
+  - LC
+  opt_uses:
+  - group_alarm
+  uses:
+  - group_mode
+
+LGRP_SS_OS_IM:
+  guid: "232f10a1-3c4e-4a10-8a50-3f0e85b20599"
+  description: "Standard lighting fixture group control with scene control and dimming control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - SS
+  - IM
+  uses:
+  - group_mode
+
+LGRP_OS_AWIC:
+  guid: "ac5f1146-2734-44f8-b3d1-99e4226fc72a"
+  description: "Standard lighting fixture group control with zone occupancy montoring and luminance control"
+  is_canonical: true
+  implements:
+  - LGRP
+  - OS 
+  - AWIC
+  uses:
+  - group_mode

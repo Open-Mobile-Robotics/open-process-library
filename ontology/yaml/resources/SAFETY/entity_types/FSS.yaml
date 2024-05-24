@@ -1,0 +1,36 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Canonical types
+
+
+FSS_STD:
+  guid: "8aa5b639-8a44-4734-a676-31198ccd2c90"
+  description: "Basic fire suppression."
+  is_canonical: true
+  implements:
+  - FSS
+  uses:
+  - fire_alarm
+
+FSS_FA2X_GS:
+  guid: "637223a2-1c85-4ba3-b28f-ba5c96ffce9d"
+  description: "Fire Suppression System with with 2-level alarm and gas suppression."
+  is_canonical: true
+  implements:
+  - FSS
+  - FA2X
+  uses:
+  - master_alarm
+  - gas_release_valve_status

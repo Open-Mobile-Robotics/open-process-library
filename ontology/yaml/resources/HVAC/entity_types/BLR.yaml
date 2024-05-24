@@ -1,0 +1,342 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+########################
+### Canonical Types  ###
+########################
+
+BLR_SS_SWTC_CPC:
+  guid: "caf36a63-1184-4bd1-81cc-29f6a105b3f1"
+  description: "Simple boiler with onboard circulation pump."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - CPC
+
+BLR_SS_SWTC:
+  guid: "80dacf95-bd8f-4682-859a-f71cd8b80012"
+  description: "Simple boiler with start/stop and supply temperature control."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+
+BLR_SS_SWTC_SWISOVPM:
+  guid: "51888830-2bc3-4c50-984f-f37e36aff2c2"
+  description: "Simple boiler with supply temperature control and an isolation valve on the supply side."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - SWISOVPM
+
+BLR_SS_SWTC_RWISOVM:
+  guid: "7e0edd0a-0e35-4fdd-b683-5ed34d6eb7d7"
+  description: "Simple boiler with supply temperature control and binary return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - RWISOVM
+
+BLR_SS_SWTC_SWISOVM:
+  guid: "303c861e-7685-440e-b4ab-800a0f654e71"
+  description: "Simple boiler with supply control and binary supply isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - SWISOVM
+
+BLR_CPC_SS_SWTC_SWISOVM:
+  guid: "98a97286-b59a-43f0-852e-25c7d736408f"
+  description: "Simple boiler with supply control, binary supply isolation, and an onboard circulation pump."
+  is_canonical: true
+  implements:
+  - BLR
+  - CPC
+  - SS
+  - SWTC
+  - SWISOVM
+
+BLR_SS_SWTC_HT2SWC:
+  guid: "105211ef-439e-4699-b094-c4f5fb678bb0"
+  description: "Two-stage boiler with supply temperature control."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HT2SWC
+
+BLR_SS_SWTC_RWISOVPM:
+  guid: "254f954c-7706-486b-a007-c84adebc4749"
+  description: "Simple boiler with supply control and return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - RWISOVPM
+
+BLR_SS_SWTC_HT4SWC:
+  guid: "5dfe2c43-72d4-42db-be9a-487245cd5b6d"
+  description: "Four-stage boiler with supply control."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HT4SWC
+
+BLR_SS_SWTC_HTSWC:
+  guid: "c5c94936-297a-4a7f-a8a6-3f5676bc6786"
+  description: "Single-stage boiler with supply control."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HTSWC
+
+BLR_SS_SWTC_RWISOVM_HT2SWC:
+  guid: "79372ef8-3df7-4691-aafd-6be7909ea119"
+  description: "Two-stage boiler with supply control and binary return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - RWISOVM
+  - HT2SWC
+
+BLR_SS_SWTC_RWISOVPM_RWISOVM:
+  guid: "4d786107-a007-45d5-ad9a-ffe12bcc221f"
+  description: "Boiler with supply control and two return isolation valves."
+  is_canonical: true  #Maybe not... not very common to have two valves.
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - RWISOVPM
+  - RWISOVM
+
+BLR_SS_SWTC_HTSWC_RWISOVM:
+  guid: "a03a8441-8116-48fe-8fc1-48eba3ab39d0"
+  description: "Boiler with single-stage heat and binary return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HTSWC
+  - RWISOVM
+
+BLR_SS_SWTC_SWISOVM_HTSWC:
+  guid: "6a98b287-c887-417d-ad9b-b787ab24452b"
+  description: "Boiler with single-stage heater and binary supply isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - SWISOVM
+  - HTSWC
+
+BLR_SS_SWTC_HTSWC_RWISOVPM:
+  guid: "4331cca1-fc1a-40f6-987e-aa567cfb6f65"
+  description: "Boiler with single stage heat and return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HTSWC
+  - RWISOVPM
+
+BLR_SS_SWTC_CPC_RWISOVM:
+  guid: "e7e7cf52-d8ef-4949-bd28-d4dbc642e456"
+  description: "Simple boiler with onboard circulation pump and binary return water isolation valve monitoring."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - CPC
+  - RWISOVM
+
+BLR_SS_SWTC_HT4SWC_RWISOVM_SWISOVM:
+  guid: "e01c5d26-563a-44c3-af17-b3bc18f6e708"
+  description: "Four-stage boiler with both supply and return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HT4SWC
+  - RWISOVM
+  - SWISOVM
+
+BLR_SS_SWTC_HTSWC_CPC:
+  guid: "2c1d424c-d1a1-4c0d-b170-ff563150bd89"
+  description: "Boiler with single stage heat and onboard circulation pump."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HTSWC
+  - CPC
+
+BLR_SS_SWTC_HTSWC_RWISOVM_SWISOVM:
+  guid: "06bd735f-06d8-4f2d-9bec-7a3bc0ca1d1c"
+  description: "Single-stage boiler with both supply and return isolation."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - HTSWC
+  - RWISOVM
+  - SWISOVM
+
+BLR_SS_SWTC_CPC_BYPVPM:
+  guid: "1307c544-7c28-4ce7-aa27-a9ac45ae80ee"
+  description: "Simple boiler with onboard circulation pump and bypass valve."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - CPC
+  - BYPVPM
+
+BLR_SS_SWTC_CPC_RWISOVPM:
+  guid: "5bda5fb8-68ca-4ed2-afff-6e76e4008059"
+  description: "Simple boiler with onboard circulation pump and return water isolation valve percentage monitoring."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - CPC
+  - RWISOVPM
+
+BLR_SS_SWTM_SWISOVM:
+  guid: "5cf357ef-9451-48d3-97fa-821758645f53"
+  description: "Simple boiler with supply water temperature monitoring and supply water isolation valve."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTM
+  - SWISOVM
+  opt_uses:
+  - condensing_water_flowrate_status
+
+BLR_SS_SWTC_CPC_HT2SWC:
+  guid: "b8c605e0-cae6-4252-9e0a-a0c74cf93d88"
+  description: "Two-stage boiler with onboard circulation pump."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - CPC
+  - HT2SWC
+
+BLR_SS_SWTC_WDPC:
+  guid: "f9307528-e827-4f25-be91-4ef3caa19d94"
+  description: "Boiler with supply water temperature control and differential pressure control."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - SWTC
+  - WDPC
+
+BLR_SS_RWTC_HTRWC:
+  guid: "74aeaeeb-14b6-4592-ba27-e2845902d427"
+  description: "Single-stage boiler with return temperature control."
+  is_canonical: true
+  implements:
+  - BLR
+  - SS
+  - RWTC
+  - HTRWC
+
+BLR_HT2SWC_RWTM:
+  guid: "e72cfc15-8544-4a9c-bc0a-89f33384ebeb"
+  description: "Two-stage boiler with supply control, return temperature monitoring."
+  is_canonical: true
+  implements:
+  - BLR
+  - HT2SWC
+  - RWTM
+
+###################################
+### Existing Non-standard Types ###
+###################################
+
+BLR_SS_SWTC_NONCANONICAL_1:
+  guid: "bf45f546-498d-422e-bf6f-15242360e3af"
+  description: "Non-standard type."
+  implements:
+  - BLR_SS_SWTC
+  - INCOMPLETE
+  uses:
+  - bypass_valve_percentage_command
+
+BLR_SS_SWTC_NONCANONICAL_2:
+  guid: "19af4bb1-af89-4aef-a63a-a2729bb4ee6a"
+  description: "Non-standard type."
+  implements:
+  - BLR_SS_SWTC
+  - INCOMPLETE
+  uses:
+  - heating_stage_run_count
+
+BLR_SS_SWTC_SWISOVM_NONCANONICAL_1:
+  guid: "7dcb33d4-70ee-4f0a-9ba3-2cb4f66f83b2"
+  description: "Non-standard type."
+  implements:
+  - BLR_SS_SWTC_SWISOVM
+  - INCOMPLETE
+  uses:
+  - heating_stage_run_count
+
+BLR_SS_SWTC_SWISOVM_NONCANONICAL_2:
+  guid: "46c2e8d8-a26b-4e30-b809-8d8780485ad8"
+  description: "Non-standard type."
+  implements:
+  - BLR_SS_SWTC_SWISOVM
+  - INCOMPLETE
+  uses:
+  - heating_percentage_command
+
+BLR_SS_SWTC_HTSWC_RWISOVPM_NONCANONICAL_1:
+  guid: "8773a775-431e-4c77-ae05-0b948e27146a"
+  description: "Non-standard type."
+  implements:
+  - BLR_SS_SWTC_HTSWC_RWISOVPM
+  - INCOMPLETE
+  uses:
+  - flue_gas_temperature_sensor
+

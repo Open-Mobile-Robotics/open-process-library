@@ -1,0 +1,77 @@
+# abstract.yaml for Mining Namespace
+
+ROCK_CRUSHING:
+  guid: "d2a1c2a8-7c6a-4eb1-b8a1-96e6c3e2073e"
+  description: "Monitors the parameters involved in the rock crushing process."
+  is_abstract: true
+  uses:
+  - crusher_speed_sensor
+  - crusher_pressure_sensor
+  - crusher_temperature_sensor
+  opt_uses:
+  - crusher_vibration_sensor
+  - crusher_power_sensor
+  - crusher_load_sensor
+
+ORE_PROCESSING:
+  guid: "a7b2c4d3-0c9b-4f11-9f12-2d9b4e6a3e5e"
+  description: "Monitors the parameters of ore processing equipment."
+  is_abstract: true
+  uses:
+  - ore_feed_rate_sensor
+  - ore_output_quality_sensor
+  opt_uses:
+  - ore_temperature_sensor
+  - ore_humidity_sensor
+  - ore_density_sensor
+
+CONVEYOR_MONITORING:
+  guid: "b8c3d4e5-1d2e-4f35-8a2e-4d9e5f7a9d5e"
+  description: "Monitors the parameters of conveyor systems in mining operations."
+  is_abstract: true
+  uses:
+  - conveyor_speed_sensor
+  - conveyor_vibration_sensor
+  - conveyor_belt_tension_sensor
+  opt_uses:
+  - conveyor_load_sensor
+  - conveyor_alignment_sensor
+
+VENTILATION_MONITORING:
+  guid: "c9d4e5f6-2e3f-4a56-9b4e-5d9e6f8b9e6f"
+  description: "Monitors ventilation systems in underground mining."
+  is_abstract: true
+  uses:
+  - airflow_sensor
+  - air_quality_sensor
+  - ventilation_fan_speed_sensor
+  opt_uses:
+  - ventilation_temperature_sensor
+  - ventilation_humidity_sensor
+  - ventilation_pressure_sensor
+
+WATER_MANAGEMENT:
+  guid: "d0e5f6g7-3f4g-5b67-9c4f-6d9f7g8c0f7g"
+  description: "Monitors water management systems in mining operations."
+  is_abstract: true
+  uses:
+  - water_flow_sensor
+  - water_level_sensor
+  - water_quality_sensor
+  opt_uses:
+  - water_pressure_sensor
+  - water_temperature_sensor
+  - water_pH_sensor
+
+DRILLING_MONITORING:
+  guid: "e1f6g7h8-4g5h-6c78-9d5g-7e9g8h9d1h8h"
+  description: "Monitors parameters of drilling operations."
+  is_abstract: true
+  uses:
+  - drill_speed_sensor
+  - drill_torque_sensor
+  - drill_pressure_sensor
+  opt_uses:
+  - drill_vibration_sensor
+  - drill_temperature_sensor
+  - drill_depth_sensor

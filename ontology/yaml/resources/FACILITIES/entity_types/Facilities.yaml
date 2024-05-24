@@ -1,0 +1,43 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+DOOR:
+  guid: "a8aab043-80c4-4276-ac2d-6aeca9e4644f"
+  description: "A physical door"
+
+ROOM:
+  guid: "731dcd1a-b680-4562-b05d-af250d0c77eb"
+  description: "This is a type for ROOM facilities object"
+
+FLOOR:
+  guid: "8acebf40-7bb2-483f-8c3f-045a78c95906"
+  description: "This is a type for FLOOR facilities object"
+  implements:
+  - CARSON/COORDINATE_BASIS
+
+BUILDING:
+  guid: "7ef90bf9-b82e-4819-be57-e23c0575ae1b"
+  description: "This is a type for BUILDING facilities object"
+
+CORRIDOR:
+  guid: "39a80a67-fba4-41d4-8bd9-4ea6195fb610"
+  description: "This is a type for CORRIDOR facilities object"
+
+STAIRWELL:
+  guid: "26c316c2-6910-48f5-8acd-b467b256fc7a"
+  description: "This is a type for STAIRWELL facilities object"
+  
+RAMP:
+  guid: "a7c9c7da-5024-446f-969c-78d0e40d74b9"
+  description: "This is a type for RAMP facilities object"

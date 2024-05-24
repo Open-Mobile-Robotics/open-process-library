@@ -1,0 +1,192 @@
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the License);
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an AS IS BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+########################
+### Canonical Types  ###
+########################
+
+PMP_SS:
+  guid: "82eccf0f-5f19-470d-a27b-cd00e8cbe25e"
+  description: "Typical pump."
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+
+PMP_SS_VSC:
+  guid: "4e1f807a-1811-4cad-9a6f-9776320a7de0"
+  description: "Typical variable speed pump."
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSC
+
+PMP_SS_SWTM:
+  guid: "d0b32b26-b10a-4963-849e-4f213e0ee293"
+  description: "Pump with supply water temperature monitoring."
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - SWTM
+
+PMP_DRPM:
+  guid: "d88d7308-a688-4b7a-9b94-ed9bd0b04266"
+  description: "Pump implemented with drain pump monitoring ."
+  is_canonical: true
+  implements:
+  - PMP
+  - DRPM
+
+PMP_SS_VSC_WDPM:
+  guid: "6a2cba7a-5bfc-4cc6-9f82-52389d266159"
+  description: "Variable speed pump with differential pressure monitoring."
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSC
+  - WDPM
+
+PMP_SS_VSC_WDPC:
+  guid: "8ea16672-10b9-4ca4-bf5b-bc6c1e10b065"
+  description: "Pump with variable speed control and differential pressure control"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSC
+  - WDPC
+
+PMP_SS_VSFC:
+  guid: "08683c47-596a-4e52-8545-5079201b55df"
+  description: "PMP device with pump frequency control"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSFC
+  opt_uses:
+  - control_mode
+  - run_mode
+  - lost_power_alarm
+  - low_differential_pressure_alarm
+  - chilled_water_differential_pressure_setpoint
+
+PMP_SS_CHWISOVPM_VSFC:
+  guid: "a3bbc05a-18ed-4b2e-a44c-ef65666ce160"
+  description: "PMP device with chilled water valve and pump frequency control"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - CHWISOVPM
+  - VSFC
+  opt_uses:
+  - control_mode
+  - run_mode
+  - lost_power_alarm
+  - low_differential_pressure_alarm
+  - chilled_water_differential_pressure_setpoint
+
+PMP_SS_VSC_WDPC_WFRC:
+  guid: "626cf14c-537c-4dbf-85e1-1ed6d68d5aa3"
+  description: "Pump with variable speed control, differential pressure control and flow control."
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSC
+  - WDPC
+  - WFRC
+
+PMP_SS_VSC_SWTC:
+  guid: "51cb0ba6-9436-4fa9-a72f-a70d4fdbf711"
+  description: "Pump with variable speed control and supply water temperature control"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSC
+  - SWTC
+
+PMP_SS_CWCS_VSFC:
+  guid: "41b12d31-c1d7-4c9e-8118-ca52a3f90752"
+  description: "PMP device with condensing water valve and pump frequency control"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - CWCS
+  - VSFC
+  opt_uses:
+  - control_mode
+  - run_mode
+  - lost_power_alarm
+
+PMP_SS_RMM:
+  guid: "a2b4b139-ef0a-48fc-91b6-317b51cf344f"
+  description: "Pump with pressure switch and failed alarm monitoring"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - RMM
+  opt_uses:
+  - failed_alarm
+  - low_pressure_status
+  - high_pressure_status
+
+PMP_SS_WDPM:
+  guid: "ef2e7d16-8514-4b16-a1c0-03ed019c52ea"
+  description: "Pump with pressure alarms and status monitoring"
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - WDPM
+
+PMP_SS_VSC_HWBYPVM:
+  guid: "aec25b2b-513d-474d-91b3-7cb756fe12ce"
+  description: "Variable speed pump with heating water bypass valve binary control."
+  is_canonical: true
+  implements:
+  - PMP
+  - SS
+  - VSC
+  - HWBYPVM
+
+###################################
+### Existing Non-standard Types ###
+###################################
+
+PMP_SS_VSC_NONCANONICAL_1:
+  guid: "026231f9-fae5-4250-8d4b-c8b33948dc5d"
+  description: "Non-standard variable speed pump."
+  implements:
+  - PMP_SS_VSC
+  - INCOMPLETE
+  uses:
+  - speed_frequency_command
+
+PMP_SS_VSC_NONCANONICAL_2:
+  guid: "f9ffc542-75a0-4159-9b19-2b72fd1b4396"
+  description: "One-off pump that performs chilled water blending."
+  implements:
+  - PMP_SS_VSC
+  uses:
+  - mixing_valve_percentage_command
+  - chilled_supply_water_temperature_setpoint
+  - chilled_supply_water_temperature_sensor
