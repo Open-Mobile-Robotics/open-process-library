@@ -1,0 +1,6 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<Tagtable name='OrchestrationTable'>
+  <!-- exported by 'Totally Integrated Automation Portal' version 1900.0.6801.3   © 2004-2016 Siemens AG - all rights reserved -->
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.1'>Light_On_Fbk</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.3'>Light_Off_Fbk</Tag>
+</Tagtable>

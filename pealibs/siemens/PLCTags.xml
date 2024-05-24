@@ -1,0 +1,19 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<Tagtable name='OrchestrationTable'>
+  <!-- exported by 'Totally Integrated Automation Portal' version 1900.0.6801.3   © 2004-2016 Siemens AG - all rights reserved -->
+  <Tag type='Int' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%MW0'>IntProcedureCur</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.0'>Timer_Light_Off_Fbk</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.1'>Light_On_Fbk</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.2'>Timer_Light_On_Fbk</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.3'>Light_Off_Fbk</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.4'>CEQ_Start_Req</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.5'>CEQ_Stop_Req</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.6'>CEQ_Feedback_Hold</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M2.7'>Op_Light_On_Req</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M3.0'>Op_Light_Off_Req</Tag>
+  <Tag type='Time_Of_Day' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%MD0'>Timer_Start</Tag>
+  <Tag type='Time_Of_Day' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%MD2'>Timer_Stop</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M3.1'>Start_Procedure_Req</Tag>
+  <Tag type='Bool' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%M3.2'>Stop_Procedure_Req</Tag>
+  <Tag type='Int' hmiVisible='True' hmiWriteable='True' hmiAccessible='True' retain='False' remark='' addr='%MW3'>HMI_Ident_1</Tag>
+</Tagtable>
